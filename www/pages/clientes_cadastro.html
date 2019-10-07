@@ -1,0 +1,122 @@
+<div class="page grey-100">
+    <div class="header blue-800">
+        <div class="left">
+            <button class="icon ion-ios-arrow-back" onclick="backPage()"></button>
+        </div>
+        <h1>Cadastro de clientes</h1>
+    </div>
+
+    <div class="content has-header">
+        <div class="list">
+            <div class="item">
+                <div class="col">
+                    <select name="natureza" class="natureza" id="natureza" onchange="verificarTipo();">
+                        <option value="J">Jurídica</option>
+                        <option value="F">Física</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="item label-fixed">
+                <label for="cpf_cnpj"><b>CNPJ/CPF:</b> <span class="text-red">*</span></label>
+                <input type="text" id="cpf_cnpj" name="cpf_cnpj" maxlength="18" placeholder="Digite cnpj ou cpf...">
+            </div>
+
+            <div class="item label-fixed">
+                <label for="rg_inscricao"><b>Inscri./RG:</b> <span class="text-red">*</span></label>
+                <input type="text" id="rg_inscricao" name="rg_inscricao" maxlength="16" placeholder="Digite inscrição...">
+            </div>
+
+            <div class="item label-fixed">
+                <label for="nome_fantasia"><b>Fantasia:</b> <span class="text-red">*</span></label>
+                <input type="text" id="nome_fantasia" name="nome_fantasia" maxlength="50" placeholder="Digite nome fantasia...">
+            </div>
+
+            <div class="item label-fixed">
+                <label for="razao_social"><b>Social:</b> <span class="text-red">*</span></label>
+                <input type="text" id="razao_social" name="razao_social" maxlength="50" placeholder="Digite razão social...">
+            </div>
+
+            <div class="item label-fixed">
+                <label for="cep"><b>CEP:</b> <span class="text-red">*</span></label>
+                <input type="text" id="cep" name="cep" maxlength="9" placeholder="Digite cep..." onchange="buscaCep();">
+            </div>
+
+            <div class="item row">
+                <div class="col">
+                    <input type="text" id="endereco" name="endereco" maxlength="40" placeholder="Digite endereco...">
+                </div>
+
+                <div class="col-10">
+                    <input type="text" id="num_end_principal" maxlength="10" placeholder="N°...">
+                </div>
+            </div>
+
+            <div class="item row">
+                <div class="col-40">
+                    <input type="text" id="bairro" name="bairro" maxlength="40" placeholder="Digite bairro...">
+                </div>
+
+                <div class="col-40">
+                    <input type="text" id="cidade" name="cidade" maxlength="40" placeholder="Digite cidade...">
+                </div>
+
+                <div class="col-20">
+                    <input type="text" id="estado" name="estado" maxlength="2" placeholder="Estado...">
+                </div>
+            </div>
+
+            <div class="item label-fixed">
+                <label for="complemento"><b>Comple.:</b> </label>
+                <input type="text" id="comp_endereco" maxlength="20" placeholder="Digite complemento...">
+            </div>
+
+            <div class="item label-fixed">
+                <label for="telefone"><b>Telefone:</b> </label>
+                <input type="text" id="telefone" maxlength="15" placeholder="Digite telefone...">
+            </div>
+
+            <div class="item label-fixed">
+                <label for="telefone"><b>Celular:</b> </label>
+                <input type="text" id="celular" name="celular" maxlength="15" placeholder="Digite celular...">
+            </div>
+
+            <div class="item label-fixed">
+                <label for="telefone"><b>Contato:</b> </label>
+                <input type="text" id="contato" name="contato" maxlength="40" placeholder="Digite contato...">
+            </div>
+
+            <div class="item label-fixed">
+                <label for="telefone"><b>Email:</b> <span class="text-red">*</span></label>
+                <input type="text" id="email" name="email" maxlength="100" placeholder="Digite email...">
+            </div>
+
+            <div class="item row">
+                <div class="col-33">
+                    <input type="text" id="transportadora" placeholder="Transportadora...">
+                </div>
+            </div>
+            <div class="item row">
+                <div class="col">
+                    <input type="text" id="obs_cadastro" placeholder="Digite obs cadastro...">
+                </div>
+            </div>
+            <!--
+            <div class="item">
+                <input type="text" id="fax" maxlength="15" placeholder="Digite fax...">
+            </div>
+
+            <div class="item">
+                <input type="text" id="website" maxlength="50" placeholder="Digite website...">
+            </div>
+            -->
+            <div class="item row">
+                <button class="border-blue-800 text-blue-800 full" onclick="confirmacao();">Salvar cadastro</button>
+                <button class="border-red text-red full" style="margin-left: 5px;" onclick="backPage();">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden" id="template-alert-confirma">
+    </div>
+</div>

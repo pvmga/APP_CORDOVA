@@ -1,0 +1,64 @@
+<div class="page grey-100">
+    <div class="header blue-800">
+        <div class="left">
+            <button class="icon ion-ios-arrow-back" onclick="backPage()"></button>
+        </div>
+        <h1>Lista de produtos</h1>
+    </div>
+
+    <div class="content has-header">
+        <div class="list">
+            <div class="item radius grey-200">
+                <div class="right">
+                    <button class="icon ion-search" onclick="getProdutos();"></button>
+                </div>
+                <input type="text" id="campoPesquisa" placeholder="Pesquisar...">
+            </div>
+            <div class="item" data="produtos">
+                <div class="row">
+                    <!--<div class="col-20">
+                        <img class="avatar" src="./img/icon-menu/produtos.png" >
+                    </div>-->
+                    <div class="col margin-top">
+                        <h2 class="" style="font-size: 12px;">${ref_codigo}-${descricao}</h2>
+                    </div>
+                    <div class="col-10">
+                        <button class="icon ion-clipboard text-blue-600" onclick="alertProduto(`${ref_codigo}`);"></button>
+                    </div>
+                </div>
+                <!--<div class="row">
+                    <div class="col"></div>
+                    <div class="col-30 text-strong margin-top">
+                        <p>R$ ${preco_venda_a}</p>
+                    </div>
+                    <div class="col-10"></div>
+                    <div class="col-10 align-center grey-300">
+                        <input type="number" id="quantidade_escolhida" placeholder="">
+                    </div>
+                    <div class="col-10">
+                        <button class="icon ion-clipboard text-blue-600"></button>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+
+        <div class="hidden" id="template-alert-custom">
+            <div class="list" data="dadosProduto">
+                <div class="row item">
+                    <div class="col-25">
+                        <img class="avatar" src="./img/icon-menu/produtos.png" >
+                    </div>
+                    <div class="col">
+                        <h2><b>Descrição: </b></h2><span class="text-small">${descricao}</span>
+                    </div>
+                </div>
+                <label class="item">
+                    <h2><b>Preço: </b>R$ <span>${preco_venda_a}</span></h2>
+                </label>
+                <label class="item">
+                    <h2><b>Estoque: </b><span>${estoqueatual}</span></h2>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

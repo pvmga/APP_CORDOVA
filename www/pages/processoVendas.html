@@ -1,0 +1,71 @@
+<div class="page grey-100">
+    <div class="header blue-800">
+        <div class="left">
+            <button class="icon ion-ios-arrow-back" onclick="backPage()"></button>
+        </div>
+        <h1>Novo pedido</h1>
+    </div>
+    <div class="content has-header">
+        <div class="list">
+            <div class="item">
+                <p><input type="text" id="codigoCliente" hidden></p>
+                <p><input type="text" class="text-strong" id="nomeCliente"></p>
+                <!--<select class="select2Cliente" name="state">
+                    <option value="">Selecione cliente...</option>
+                    <option value="${ref_codigo}" data="clientes">${nome_fantasia}</option>
+                </select>-->
+            </div>
+            <div class="item">
+                <select class="select2CondPagamento" name="state">
+                    <option value="">Condição de Pagamento...</option>
+                    <option value="${ref_codigo}" data="condicao">${descricao}</option>
+                </select>
+            </div>
+            <div class="item">
+                <select class="select2TipoPagamento" name="state">
+                    <option value="">Tipo de Pagamento...</option>
+                    <option value="${ref_codigo}" data="tipo">${descricao}</option>
+                </select>
+            </div>
+            <div class="item">
+                <select class="select2Produto" name="state">
+                    <option value="">Selecione produto...</option>
+                    <option value="${ref_codigo}" data="produtos">${descricao}</option>
+                </select>
+            </div>
+            <div class="item">
+                <button class="blue-900 full text-strong icon ion-plus" id="btn-validar" onclick="alert('Em desenvolvimento')"></button>
+            </div>
+        </div>
+        <div class="list">
+            
+            <div class="item">
+                <h2 class="text-strong" style="font-size: 12px;">PRODUTO BLA BLA BLA</h2>
+                <p style="font-size: 10px;">QTDE: 12</p>
+                <p style="font-size: 10px;">R$ 25,2</p>
+                <p class="grey-200 padding">
+                    <button class="text-red small" onclick="excluirContato($$index);">Excluir</button>
+                    <button class="text-blue small" onclick="editarContato($$index);">Editar</button>
+                </p>
+            </div>
+            <div class="item">
+                <h2 class="text-strong" style="font-size: 12px;">PRODUTO BLA BLA BLA</h2>
+                <p style="font-size: 10px;">QTDE: 12</p>
+                <p style="font-size: 10px;">R$ 25,2</p>
+                <p class="grey-200 padding">
+                    <button class="text-red small" onclick="excluirContato($$index);">Excluir</button>
+                    <button class="text-blue small" onclick="editarContato($$index);">Editar</button>
+                </p>
+            </div>
+            <div class="item">
+                <h2 class="text-strong" style="font-size: 12px;">PRODUTO BLA BLA BLA</h2>
+                <p style="font-size: 10px;">QTDE: 12</p>
+                <p style="font-size: 10px;">R$ 25,2</p>
+                <p class="grey-200 padding">
+                    <button class="text-red small" onclick="excluirContato($$index);">Excluir</button>
+                    <button class="text-blue small" onclick="editarContato($$index);">Editar</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

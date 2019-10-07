@@ -1,0 +1,16 @@
+<div class="page grey-100 has-header has-sub-header">
+    <div class="header blue-800">
+        <div class="left">
+            <button class="icon ion-ios-arrow-back" onclick="backPage()"></button>
+        </div>
+        <h1>Lista de vendas</h1>
+    </div>
+    <div class="header blue-800 sub shadow tab">
+        <button class="icon ion-android-person active" onclick="openTabs('orcamentos')">Orçamentos</button>
+        <button class="icon ion-android-list " onclick="openTabs('enviados')">Enviados</button>
+        <button class="icon ion-android-chat" onclick="openTabs('faturados')">Faturados</button>
+    </div>
+    <div class="tab-content" id="orcamentos"></div>
+    <div class="tab-content" id="enviados"></div>
+    <div class="tab-content" id="faturados"></div>
+</div>

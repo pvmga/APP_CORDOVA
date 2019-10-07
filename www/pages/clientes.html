@@ -1,0 +1,62 @@
+<div class="page grey-100">
+    <div class="header blue-800">
+        <div class="left">
+            <button class="icon ion-ios-arrow-back" onclick="backPage()"></button>
+        </div>
+        <h1>Carteira de clientes</h1>
+        <div class="right">
+            <button class="icon ion-plus" onclick="openPage('pages/clientes_cadastro', {}, mask);"></button>
+        </div>
+    </div>
+
+    <div class="content has-header">
+        <div class="list">
+            <div class="item radius grey-200">
+                <div class="right">
+                    <button class="icon ion-search" onclick="getClientes();"></button>
+                </div>
+                <input type="text" id="campoPesquisa" placeholder="Pesquisar...">
+            </div>
+            <div class="item" data="clientes">
+                <div class="row">
+                    <!--<div class="col-20">
+                        <img class="avatar" src="./img/icon-menu/clientes.png" >
+                    </div>-->
+                    <div class="col">
+                        <b><p style="font-size: 12px;">${ref_codigo}-${razao_social}</p></b>
+                        <p style="font-size: 10px;">${nome_fantasia}</p>
+                        <p class="grey-200 padding">
+                            <button class="$$validaValor{sincronizado} small" onclick="alerta('Sincronizador', 'Cliente sincronizado com o sistema local...');">Sincronizado</button>
+                            <button class="text-blue small" onclick="openPage('pages/processoVendas', { ref_codigo: `${ref_codigo}`, nome_cliente: `${nome_fantasia}` }, selectCliente);">Montar Pedido</button>
+                        </p>
+                    </div>
+                    <!--<div class="col-10">
+                        <button style="margin-right: -20px;" class="icon ion-refresh text-big" onclick="alerta('Sincronizador', 'Em desenvolvimento...');"></button>
+                    </div>
+                    <div class="col-10">
+                        <button class="icon ion-clipboard text-blue-600 text-big" onclick="alertCliente(${codigo});"></button>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden" id="template-alert-custom">
+        <div class="list" data="dadosCliente">
+            <div class="row item">
+                <div class="col-25">
+                    <img class="avatar" src="./img/icon-menu/clientes.png" >
+                </div>
+                <div class="col">
+                    <h2><b>Razão social: </b></h2><span class="text-small">${razao_social}</span>
+                </div>
+            </div>
+            <label class="item">
+                <h2><b>Nome fantasia: </b></h2><span class="text-small">${nome_fantasia}</span>
+            </label>
+            <label class="item">
+                <h2><b>Sincronizado: </b></h2><span class="text-small">${sincronizado}</span>
+            </label>
+        </div>
+    </div>
+</div>
