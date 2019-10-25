@@ -8,63 +8,106 @@
     <div class="content has-header">
         <div class="list">
             <div class="item">
-                <p><input type="text" id="codigoCliente" hidden></p>
-                <p><input type="text" class="text-strong" id="nomeCliente"></p>
-                <!--<select class="select2Cliente" name="state">
-                    <option value="">Selecione cliente...</option>
-                    <option value="${ref_codigo}" data="clientes">${nome_fantasia}</option>
-                </select>-->
+                <p><input id="codigoCliente" hidden></p>
+                <p><input id="estadoCliente" hidden></p>
+                <p><input id="optanteSimples" hidden></p>
+                <p><input id="calculaSt" hidden></p>
+                <p class="align-center text-strong" id="nomeCliente"></p>
             </div>
             <div class="item">
-                <select class="select2CondPagamento" name="state">
+                <select class="select2CondPagamento" name="state" onchange="updateVenda();">
                     <option value="">Condição de Pagamento...</option>
                     <option value="${ref_codigo}" data="condicao">${descricao}</option>
                 </select>
             </div>
+
             <div class="item">
-                <select class="select2TipoPagamento" name="state">
+                <input id="percentualAcrescimo" hidden>
+                <select class="select2TipoPagamento" name="state" onchange="updateVenda();">
                     <option value="">Tipo de Pagamento...</option>
                     <option value="${ref_codigo}" data="tipo">${descricao}</option>
                 </select>
             </div>
+
             <div class="item">
-                <select class="select2Produto" name="state">
-                    <option value="">Selecione produto...</option>
-                    <option value="${ref_codigo}" data="produtos">${descricao}</option>
-                </select>
+                <div class="right">
+                    <button class="icon ion-search" onclick="busca();"></button>
+                </div>
+                <div class="grey-300 padding radius">
+                    <input type="text" id="campoPesquisaProdVenda" placeholder="Pesquisar produto...">
+                </div>
+                
             </div>
-            <div class="item">
-                <button class="blue-900 full text-strong icon ion-plus" id="btn-validar" onclick="alert('Em desenvolvimento')"></button>
+
+            <div class="tabela-produtos">
+                <div class="item $$preencherMask{v}" data="selectProdutos">
+                    <div class="grey-800 padding">
+                        <span class="hidden ref_codigo_produto" id="">${ref_codigo}</span>
+                        <div class="row">
+                            <div class="col">
+                                <h2 class="text-white" style="font-size: 13px;">${ref_codigo}-${descricao}</h2>
+                            </div>
+                        </div>
+                        <div class="row margin-top">
+                            <div class="grey-200 quantidade padding col border">                            
+                                <label class="text-bold" for="quantidade_digitada">Qtde.</label>
+                                <input class="small quantidade_digitada" type="number" name="quantidade_digitada" id="quantidade_digitada" placeholder="" value="1">
+                            </div>
+                            <div class="grey-200 desconto padding col border">
+                                <label class="text-bold" for="percentual_desconto">(%) Desc.</label>
+                                <input class="small percentual_desconto" type="text" name="percentual_desconto" id="percentual_desconto" placeholder="" value="${percentual_desconto}">
+                            </div>
+                            <div class="grey-200 valor padding col border" hidden>
+                                <label class="text-bold" for="percentual_acrescimo">($) Acresc.</label>
+                                <input class="small percentual_acrescimo" type="text" name="percentual_acrescimo" id="percentual_acrescimo" value="${percentual_acrescimo}">
+                            </div>
+                            <div class="grey-200 valor padding col border" hidden>
+                                <label class="text-bold" for="aliquota_ipi_original">Aliq.</label>
+                                <input class="small aliquota_ipi_original" type="text" name="aliquota_ipi_original" id="aliquota_ipi_original" value="${aliquota_ipi_original}">
+                            </div>
+                            <div class="grey-200 valor padding col border">
+                                <label class="text-bold" for="valor_unitario_produto">Vlr. Unit.</label>
+                                <input class="small valor_unitario_produto" type="text" name="valor_unitario_produto" id="valor_unitario_produto" value="${preco_venda_a}">
+                            </div>
+                            <div class="col-10 blue-500 no-border">
+                                <div class="margin-top">
+                                    <button class="icon ion-plus text-white" onclick="verificarProduto(`${ref_codigo}`, `${descricao}`);"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="list">
-            
-            <div class="item">
-                <h2 class="text-strong" style="font-size: 12px;">PRODUTO BLA BLA BLA</h2>
-                <p style="font-size: 10px;">QTDE: 12</p>
-                <p style="font-size: 10px;">R$ 25,2</p>
-                <p class="grey-200 padding">
-                    <button class="text-red small" onclick="excluirContato($$index);">Excluir</button>
-                    <button class="text-blue small" onclick="editarContato($$index);">Editar</button>
-                </p>
+
+        <div id="listagem_produtos_adicionado" class="">
+            <div class="list margin-top">
+                <div class="padding grey-800">
+                    <h1 class="align-center">Produtos adicionados até o momento</h1>
+                </div>
             </div>
-            <div class="item">
-                <h2 class="text-strong" style="font-size: 12px;">PRODUTO BLA BLA BLA</h2>
-                <p style="font-size: 10px;">QTDE: 12</p>
-                <p style="font-size: 10px;">R$ 25,2</p>
-                <p class="grey-200 padding">
-                    <button class="text-red small" onclick="excluirContato($$index);">Excluir</button>
-                    <button class="text-blue small" onclick="editarContato($$index);">Editar</button>
-                </p>
+
+            <div class="list grey-800 text-white">
+                <div class="item" data="dadosProduto" style="font-size: 13px;">
+                    <span class="hidden ref_codigo_produto_inserido" >${cod_produto}</span>
+                    <p style="font-size: 14px;">${cod_produto}-${descricao_produto}</p>
+                    <p>Quantidade: <span>${quantidade}</span></p>
+                    <p>Valor Unitário: <span>${valor_unitario}</span></p>
+                    <p>(%)Desc.: <span>${percentual_desconto}</span></p>
+                    <p>(%)IPI: <span>${aliquota_ipi}</span></p>
+                    <p>Valor Total: <span id="vlr_total">${valor_total}</span></p>
+                </div>
             </div>
-            <div class="item">
-                <h2 class="text-strong" style="font-size: 12px;">PRODUTO BLA BLA BLA</h2>
-                <p style="font-size: 10px;">QTDE: 12</p>
-                <p style="font-size: 10px;">R$ 25,2</p>
-                <p class="grey-200 padding">
-                    <button class="text-red small" onclick="excluirContato($$index);">Excluir</button>
-                    <button class="text-blue small" onclick="editarContato($$index);">Editar</button>
-                </p>
+            <div class="list">
+                <div class="row">
+                    <button class="blue-800 text-white full" onclick="backPage();">Salvar Pedido</button>
+                    <button class="red text-white full" style="margin-left: 5px;" onclick="verificarExclusao();">Cancelar Pedido</button>
+                </div>
+            </div>
+            <div class="list">
+                <div class="row">
+                    <button class="green text-white full" onclick="enviarPedido();">Enviar Pedido</button>
+                </div>
             </div>
         </div>
     </div>

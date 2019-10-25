@@ -7,7 +7,7 @@ function getProdutos() {
     if (campoPesquisa !== '') {
         sql = "select * from produtos where descricao like '%"+campoPesquisa+"%' or ref_codigo like '%"+campoPesquisa+"%' limit 30";
     } else {
-        sql = "select * from produtos";
+        sql = "select * from produtos limit 300";
     }
 
     //console.log(sql);

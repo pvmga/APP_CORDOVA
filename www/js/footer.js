@@ -2,18 +2,24 @@ function sairApp() {
     navigator.app.exitApp();
 }
 
-checkConnection();
+document.addEventListener('deviceready', checkConnection);
+
 function checkConnection() {
-    document.addEventListener("offline", checarOffline);
-    document.addEventListener("online", checarOnline);
-    //alert(networkState);
-}
-function checarOffline() {
-    document.getElementsByClassName('tipo_conexao')[0].innerHTML = networkState;
-    //console.log('estou offline: ' + networkState);
+    
+    document.addEventListener('offline', deviceOffline);
+    document.addEventListener('online', deviceOnline);
 }
 
-function checarOnline() {
-    document.getElementsByClassName('tipo_conexao')[0].innerHTML = networkState;
-    //console.log('estou online ' + networkState);
+function deviceOffline() {
+    alert('<b>Alerta !</b> <br /><br />O aplicativo necessita de uma conexão com a Internet para transmitir ou atualizar dados.');
+    //document.getElementsByClassName('tipo_conexao')[0].innerHTML = 'offline';
+    return false;
 }
+
+function deviceOnline() {
+    alert('<b>Alerta !</b> <br /><br />Conexão com internet restabelecida.');
+    //document.getElementsByClassName('tipo_conexao')[0].innerHTML = networkState;
+    return false;
+}
+
+//document.getElementsByClassName('tipo_conexao')[0].innerHTML = networkState;

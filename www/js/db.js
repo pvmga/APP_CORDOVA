@@ -1,7 +1,47 @@
 var db;
-document.addEventListener('deviceready', onDeviceready);
+//document.addEventListener('deviceready', onDeviceready);
+onDeviceready();
 function onDeviceready() {
+
     db = sqlitePlugin.openDatabase({name: 'mydb.db'});
+
+    db.transaction(function (txn) {
+        var sql = 'create table if not exists parametros(';
+        sql += ' ref_codigo integer primary key,';
+        sql += ' online_perm_dig_desconto varchar(1),';
+        sql += ' online_perm_alt_precos varchar(1)';
+        sql += ')';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'create table if not exists venda(';
+        sql += ' cod_venda integer primary key autoincrement,';
+        sql += ' cod_clie integer,';
+        sql += ' cod_pagamento integer,';
+        sql += ' tipo_pagamento varchar(10),';
+        sql += ' total_venda text,';
+        sql += ' sincronizado varchar(1)';
+        sql += ')';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'create table if not exists itensven(';
+        //sql += ' cod_venda integer,';
+        sql += ' cod_clie integer,';
+        sql += ' cod_produto integer,';
+        sql += ' descricao_produto varchar(60),';
+        sql += ' valor_unitario text,';
+        sql += ' percentual_desconto text,';
+        sql += ' percentual_acrescimo text,';
+        sql += ' aliquota_ipi text,';
+        sql += ' quantidade integer,';
+        sql += ' unidade varchar(2),';
+        sql += ' valor_total text'; 
+        sql += ')';
+        txn.executeSql(sql);
+    });
 
     db.transaction(function (txn) {
         var sql = 'create table if not exists cad_nbmi(';
@@ -114,9 +154,16 @@ function onDeviceready() {
         var sql = 'create table if not exists produtos(';
         sql += ' ref_codigo integer primary key,';
         sql += ' descricao text,';
+        sql += ' ref_unidade integer,';
+        sql += ' ref_unidade_descricao varchar(2),';
         sql += ' estoqueatual text,';
         sql += ' preco_venda_a text,';
-        sql += ' preco_venda_a_original text';
+        sql += ' preco_venda_a_original text,';
+        sql += ' percentual_desconto text,';
+        sql += ' percentual_desconto_original text,';
+        sql += ' aliquota_ipi text,';
+        sql += ' aliquota_ipi_original text,';
+        sql += ' promocional varchar(2)';
         sql += ')';
         txn.executeSql(sql);
     });
@@ -146,11 +193,12 @@ function onDeviceready() {
         sql += ' email varchar(500),';
         sql += ' obs_cadastro text,';
         sql += ' consumidor_final varchar(1),';
-        sql += ' disp_st varchar(1),';
+        sql += ' calcula_st varchar(1),';
         sql += ' codigo_vendedor integer,';
         sql += ' cod_vendedor_externo integer,';
         sql += ' contribuinte_icms varchar(1),';
-        sql += ' sincronizado varchar(1) default "S"';
+        sql += ' sincronizado varchar(1) default "S",';
+        sql += ' optante_simples varchar(1)';
         sql += ')';
         txn.executeSql(sql);
     });

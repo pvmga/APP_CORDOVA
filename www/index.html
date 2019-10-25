@@ -11,12 +11,15 @@
         <title>AppIngasoft</title>
     </head>
     <body>
-      <!--<div class="content blue-800 row-center align-center">-->
-        <div class="content blue-800 row-center align-center">
+      <!--<div class="content cover grey-900 blend-soft-light row-center align-center" style="background-image: url(./img/backgrounds/castelo.png);">-->
+      <div class="content blue-800 blend-soft-light row-center align-center">
         <div class="col-20"></div>
 
         <div class="col">
-          <h1 class="text-strong align-left" style="font-size: 56px;">INGASOFT</h1>
+          <div class="item align-center">
+              <img src="img/logo.png" id="initiallogo">
+          </div>
+          <!--<h1 class="text-strong align-left" style="font-size: 56px;">INGASOFT</h1>-->
           <p class="align-left">Controle por App</p>
 
           <!--<div class="space-big"></div>-->
@@ -37,17 +40,20 @@
             <!--<button class="blue-900 full text-strong" onclick="openPage('home');">Entrar</button>-->
             <button class="blue-900 full text-strong" id="btn-validar" onclick="validarLogin();">Entrar</button>
           </div>
+          <br />
+          <br />
+          <div class="item">
+            <p class="align-center text-white" onclick="alerta('Suporte.', '44 3025-5690 | 44 99854-3210 (Whatsapp).');">Dúvida ? Entre em contato.</p>
+            <!--<p class="align-center text-white tipo_conexao"></p>-->
+        </div>
           
         </div>
 
         <div class="col-20"></div>
       </div>
 
-      <div class="footer has-footer">
-        <div class="item">
-            <p class="align-center text-white" onclick="alerta('Suporte.', '44 3025-5690 | 44 99854-3210 (Whatsapp).');">Dúvida ? Entre em contato.</p>
-            <p class="align-center text-white tipo_conexao"></p>
-        </div>
+      <div class="footer">
+        
       </div>
       
       <script type="text/javascript" src="cordova.js"></script>
@@ -55,7 +61,7 @@
       
       <script type="text/javascript" src="js/jquery/dist/jquery.min.js"></script>
       <script type="text/javascript" src="js/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
-      <script type="text/javascript" src="js/select2/select2.min.js"></script>
+      <!--<script type="text/javascript" src="js/select2/select2.min.js"></script>-->
 
 
       <script type="text/javascript" src="js/db.js"></script>
@@ -64,6 +70,7 @@
       <script type="text/javascript" src="js/produtos.js"></script>
       <script type="text/javascript" src="js/vendas.js"></script>
       <script type="text/javascript" src="js/processoVendas.js"></script>
+      <script type="text/javascript" src="js/processoVendasEnviarPedido.js"></script>
       <script type="text/javascript" src="js/footer.js"></script>
     </body>
 </html>

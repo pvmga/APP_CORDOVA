@@ -186,6 +186,8 @@ function salvarCliente() {
         txn.executeSql("insert into clientes (natureza, cgc, inscricao, nome_fantasia, razao_social, cep, endereco, num_end_principal, bairro, cidade, estado, comp_endereco, telefone, celular, contato, email, transportadora, obs_cadastro, sincronizado) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         [$('#natureza option:selected').val(), $('#cpf_cnpj').val(), $('#rg_inscricao').val(), $('#nome_fantasia').val().toUpperCase(), $('#razao_social').val().toUpperCase(), $('#cep').val(), $('#endereco').val().toUpperCase(), $('#num_end_principal').val(), $('#bairro').val().toUpperCase(), $('#cidade').val().toUpperCase(), $('#estado').val().toUpperCase(), $('#comp_endereco').val().toUpperCase(), $('#telefone').val(), $('#celular').val(), $('#contato').val().toUpperCase(), $('#email').val().toUpperCase(), $('#transportadora').val(), $('#obs_cadastro').val().toUpperCase(), 'N'],
         function (tx, res) {
+            // limpar variavel.
+            produtos = [];
             openPage('pages/clientes');
         }, function (tx, error) {
             console.log(error);

@@ -19,23 +19,14 @@
             </div>
             <div class="item" data="clientes">
                 <div class="row">
-                    <!--<div class="col-20">
-                        <img class="avatar" src="./img/icon-menu/clientes.png" >
-                    </div>-->
                     <div class="col">
-                        <b><p style="font-size: 12px;">${ref_codigo}-${razao_social}</p></b>
+                        <b><p style="font-size: 12px;">${razao_social}</p></b>
                         <p style="font-size: 10px;">${nome_fantasia}</p>
                         <p class="grey-200 padding">
                             <button class="$$validaValor{sincronizado} small" onclick="alerta('Sincronizador', 'Cliente sincronizado com o sistema local...');">Sincronizado</button>
-                            <button class="text-blue small" onclick="openPage('pages/processoVendas', { ref_codigo: `${ref_codigo}`, nome_cliente: `${nome_fantasia}` }, selectCliente);">Montar Pedido</button>
+                            <button class="text-blue small" onclick="openPage('pages/processoVendas', { codigo: `${codigo}`, nome_cliente: `${nome_fantasia}`, estado: `${estado}`, optante_simples: `${optante_simples}`, calcula_st: `${calcula_st}` }, selectCliente);">Montar Pedido</button>
                         </p>
                     </div>
-                    <!--<div class="col-10">
-                        <button style="margin-right: -20px;" class="icon ion-refresh text-big" onclick="alerta('Sincronizador', 'Em desenvolvimento...');"></button>
-                    </div>
-                    <div class="col-10">
-                        <button class="icon ion-clipboard text-blue-600 text-big" onclick="alertCliente(${codigo});"></button>
-                    </div>-->
                 </div>
             </div>
         </div>
