@@ -9,8 +9,10 @@
         <div class="list">
             <div class="item">
                 <p><input id="codigoCliente" hidden></p>
+                <p><input id="refCodigoCliente" hidden></p>
                 <p><input id="estadoCliente" hidden></p>
                 <p><input id="optanteSimples" hidden></p>
+                <p><input id="codigoVendedor" hidden></p>
                 <p><input id="calculaSt" hidden></p>
                 <p class="align-center text-strong" id="nomeCliente"></p>
             </div>
@@ -25,7 +27,7 @@
                 <input id="percentualAcrescimo" hidden>
                 <select class="select2TipoPagamento" name="state" onchange="updateVenda();">
                     <option value="">Tipo de Pagamento...</option>
-                    <option value="${ref_codigo}" data="tipo">${descricao}</option>
+                    <option value="${sigla}" data="tipo">${descricao}</option>
                 </select>
             </div>
 
@@ -58,6 +60,14 @@
                                 <input class="small percentual_desconto" type="text" name="percentual_desconto" id="percentual_desconto" placeholder="" value="${percentual_desconto}">
                             </div>
                             <div class="grey-200 valor padding col border" hidden>
+                                <label class="text-bold" for="cod_grupo">Cod. Grupo</label>
+                                <input class="small cod_grupo" type="text" name="cod_grupo" id="cod_grupo" value="${cod_grupo}">
+                            </div>
+                            <div class="grey-200 valor padding col border" hidden>
+                                <label class="text-bold" for="custo_bruto">Custo Bruto</label>
+                                <input class="small custo_bruto" type="text" name="custo_bruto" id="custo_bruto" value="${custo_bruto}">
+                            </div>
+                            <div class="grey-200 valor padding col border" hidden>
                                 <label class="text-bold" for="percentual_acrescimo">($) Acresc.</label>
                                 <input class="small percentual_acrescimo" type="text" name="percentual_acrescimo" id="percentual_acrescimo" value="${percentual_acrescimo}">
                             </div>
@@ -65,9 +75,13 @@
                                 <label class="text-bold" for="aliquota_ipi_original">Aliq.</label>
                                 <input class="small aliquota_ipi_original" type="text" name="aliquota_ipi_original" id="aliquota_ipi_original" value="${aliquota_ipi_original}">
                             </div>
+                            <div class="grey-200 valor padding col border" hidden>
+                                <label class="text-bold" for="valor_unitario_produto_original">Aliq.</label>
+                                <input class="small valor_unitario_produto_original" type="text" name="valor_unitario_produto_original" id="valor_unitario_produto_original" value="${preco_venda_a_original}">
+                            </div>
                             <div class="grey-200 valor padding col border">
                                 <label class="text-bold" for="valor_unitario_produto">Vlr. Unit.</label>
-                                <input class="small valor_unitario_produto" type="text" name="valor_unitario_produto" id="valor_unitario_produto" value="${preco_venda_a}">
+                                <input class="small valor_unitario_produto" type="text" name="valor_unitario_produto_original" id="valor_unitario_produto_original" value="${preco_venda_a}">
                             </div>
                             <div class="col-10 blue-500 no-border">
                                 <div class="margin-top">
@@ -89,13 +103,59 @@
 
             <div class="list grey-800 text-white">
                 <div class="item" data="dadosProduto" style="font-size: 13px;">
-                    <span class="hidden ref_codigo_produto_inserido" >${cod_produto}</span>
-                    <p style="font-size: 14px;">${cod_produto}-${descricao_produto}</p>
-                    <p>Quantidade: <span>${quantidade}</span></p>
-                    <p>Valor Unitário: <span>${valor_unitario}</span></p>
-                    <p>(%)Desc.: <span>${percentual_desconto}</span></p>
-                    <p>(%)IPI: <span>${aliquota_ipi}</span></p>
-                    <p>Valor Total: <span id="vlr_total">${valor_total}</span></p>
+                    <div class="row margin-top">
+                        <span class="hidden ref_codigo_produto_inserido" >${cod_produto}</span>
+                        <p style="font-size: 14px;">${cod_produto}-${descricao_produto}</p>
+                    </div>
+                    <div class="row">
+                        <div class="grey-200 padding col border">
+                            <label class="text-bold" for="">Qtde.</label>
+                            <p><span class="text-grey-700" >${quantidade}</span></p>
+                        </div>
+                        <div class="grey-200 padding col border">
+                            <label class="text-bold" for="">Vlr. Unit.</label>
+                            <p><span class="text-grey-700" >${valor_unitario}</span></p>
+                        </div>
+                        <div class="grey-200 padding col border">
+                            <label class="text-bold" for="">(%)Desc.</label>
+                            <p><span class="text-grey-700" >${percentual_desconto}</span></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="grey-200 padding col border">
+                            <label class="text-bold" for="">Unit. Liq.</label>
+                            <p><span class="text-grey-700" >${valor_unit_liq}</span></p>
+                        </div>
+                        <div class="grey-200 padding col border">
+                            <label class="text-bold" for="">ST/IPI</label>
+                            <p><span class="text-grey-700" >${st_ipi}</span></p>
+                        </div>
+                        <div class="grey-200 padding col border">
+                            <label class="text-bold" for="">Total</label>
+                            <p><span class="text-grey-700" >${valor_total}</span></p>
+                        </div>
+                        <div class="col-10 red-500 no-border ">
+                            <div class="margin-top">
+                                <button class="text-white" onclick="confirmaDelecaoProduto(`${cod_produto}`);">X</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="list">
+                <div class="row" data="valor_total_venda">
+                    <div class="grey-200 valor padding border col">
+                        <label class="text-bold" for="">Total Produtos</label>
+                        <input class="small " type="text" name="" id="" value="${valor_produtos}" disabled>
+                    </div>
+                    <div class="grey-200 valor padding border col">
+                        <label class="text-bold" for="">Total ST/IPI</label>
+                        <input class="small " type="text" name="" id="" value="${valor_st_ipi}" disabled>
+                    </div>
+                    <div class="grey-200 valor padding border col">
+                        <label class="text-bold" for="">Total Venda</label>
+                        <input class="small " type="text" name="" id="" value="${valor_total}" disabled>
+                    </div>
                 </div>
             </div>
             <div class="list">
@@ -106,7 +166,7 @@
             </div>
             <div class="list">
                 <div class="row">
-                    <button class="green text-white full" onclick="enviarPedido();">Enviar Pedido</button>
+                    <button class="green text-white full" onclick="preparaPedido();">Enviar Pedido</button>
                 </div>
             </div>
         </div>

@@ -6,16 +6,25 @@ var todasVendas = [];
 var selectProdutos = [];
 var condicao = [];
 var tipo = [];
+var dadosEstadoCliente = [];
+var parametros = [];
+var decimal;
+var dadosUser = [];
+var valor_total_venda = [];
 
 document.addEventListener('backPage', function(){
     produtos = [];
     dadosProduto = [];
-    clientes = [];
+    //clientes = [];
     dadosCliente = [];
     todasVendas = [];
     selectProdutos = [];
     condicao = [];
     tipo = [];
+    dadosEstadoCliente = [];
+    parametros = [];
+    dadosUser = [];
+    valor_total_venda = [];
 });
 
 var networkState = navigator.connection.type;
@@ -23,7 +32,7 @@ setTimeout(function() {
 //    openPage('../pages/vendas');
 //    openPage('../pages/processoVendas');
 //    openPage('../pages/clientes_cadastro');
-    openPage('../pages/clientes');
+//    openPage('../pages/clientes');
 //    openPage('../pages/produtos');
 //    openPage('../home');
 }, 500)
@@ -34,7 +43,7 @@ var BASE_URL = 'http://192.168.1.33/projetos/WS_APP'; // localhost
 
 /* LOGIN */
 function sincroniza(cod_vendedor_externo) {
-    checkConnection()
+    checkConnection();
   
     loading('Aguarde, estamos sincronizando os dados...');
     sincronizadorProdutos();
@@ -69,16 +78,16 @@ function sincronizadorParametros() {
         //console.log(r['CODIGO']);
         deletarParametros();
         //for (var x=0; x<r.length; x++) {
-            inserirParametros(r.CODIGO, r.ONLINE_PERM_DIG_DESCONTO, r.ONLINE_PERM_ALT_PRECOS);
+            inserirParametros(r.CODIGO, r.ONLINE_PERM_DIG_DESCONTO, r.ONLINE_PERM_ALT_PRECOS, r.CALC_IMPOSTOS_NF, r.ESTADO, r.CASAS_DECIMAIS_VENDA);
         //}
     });
 }
 
-function inserirParametros(codigo, online_perm_dig_desconto, online_perm_alt_precos) {
+function inserirParametros(codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda) {
     //console.log('inserirParametros');
     db.transaction(function (txn) {
-        txn.executeSql('insert into parametros (ref_codigo, online_perm_dig_desconto, online_perm_alt_precos) values (?,?,?)', 
-        [codigo, online_perm_dig_desconto, online_perm_alt_precos],
+        txn.executeSql('insert into parametros (ref_codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda) values (?,?,?,?,?,?)', 
+        [codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda],
         function (tx, res) {
             //console.log(res);
         }, function (tx, error) {
@@ -114,15 +123,16 @@ function sincronizadorNbmi() {
         //console.log(r);
         deletarNbmi();
         for (var x=0; x<r.length; x++) {
-            inserirNbmi(r[x].CODIGO, r[x].NCM, r[x].NBM, r[x].ST_AC, r[x].ST_AL, r[x].ST_AM, r[x].ST_AP, r[x].ST_BA, r[x].ST_CE, r[x].ST_DF, r[x].ST_ES, r[x].ST_EX, r[x].ST_GOI, r[x].ST_MA, r[x].ST_MG, r[x].ST_MS, r[x].ST_MT, r[x].ST_PA, r[x].ST_PB, r[x].ST_PE, r[x].ST_PI, r[x].ST_PR, r[x].ST_RJ, r[x].ST_RN, r[x].ST_RO, r[x].ST_RR, r[x].ST_RS, r[x].ST_SC, r[x].ST_SE, r[x].ST_SP, r[x].ST_TOC, r[x].ST_SN_AC, r[x].ST_SN_AL, r[x].ST_SN_AM, r[x].ST_SN_AP, r[x].ST_SN_BA, r[x].ST_SN_CE, r[x].ST_SN_DF, r[x].ST_SN_ES, r[x].ST_SN_GOI, r[x].ST_SN_MA, r[x].ST_SN_MG, r[x].ST_SN_MS, r[x].ST_SN_MT, r[x].ST_SN_PA, r[x].ST_SN_PB, r[x].ST_SN_PE, r[x].ST_SN_PI, r[x].ST_SN_PR, r[x].ST_SN_RJ, r[x].ST_SN_RN, r[x].ST_SN_RO, r[x].ST_SN_RR, r[x].ST_SN_RS, r[x].ST_SN_SC, r[x].ST_SN_SE, r[x].ST_SN_TOC);
+            inserirNbmi(r[x].CODIGO, r[x].NCM, r[x].NBM, r[x].ST_AC, r[x].ST_AL, r[x].ST_AM, r[x].ST_AP, r[x].ST_BA, r[x].ST_CE, r[x].ST_DF, r[x].ST_ES, r[x].ST_EX, r[x].ST_GOI, r[x].ST_MA, r[x].ST_MG, r[x].ST_MS, r[x].ST_MT, r[x].ST_PA, r[x].ST_PB, r[x].ST_PE, r[x].ST_PI, r[x].ST_PR, r[x].ST_RJ, r[x].ST_RN, r[x].ST_RO, r[x].ST_RR, r[x].ST_RS, r[x].ST_SC, r[x].ST_SE, r[x].ST_SP, r[x].ST_TOC, r[x].ST_SN_AC, r[x].ST_SN_AL, r[x].ST_SN_AM, r[x].ST_SN_AP, r[x].ST_SN_BA, r[x].ST_SN_CE, r[x].ST_SN_DF, r[x].ST_SN_ES, r[x].ST_SN_GOI, r[x].ST_SN_MA, r[x].ST_SN_MG, r[x].ST_SN_MS, r[x].ST_SN_MT, r[x].ST_SN_PA, r[x].ST_SN_PB, r[x].ST_SN_PE, r[x].ST_SN_PI, r[x].ST_SN_PR, r[x].ST_SN_RJ, r[x].ST_SN_RN, r[x].ST_SN_RO, r[x].ST_SN_RR, r[x].ST_SN_RS, r[x].ST_SN_SC, r[x].ST_SN_SE, r[x].ST_SN_TOC, r[x].PERC_RED_ST, r[x].ICMS);
         }
     });
 }
 
-function inserirNbmi(codigo, ncm, nbm, st_ac, st_al, st_am, st_ap, st_ba, st_ce, st_df, st_es, st_ex, st_goi, st_ma, st_mg, st_ms, st_mt, st_pa, st_pb, st_pe, st_pi, st_pr, st_rj, st_rn, st_ro, st_rr, st_rs, st_sc, st_se, st_sp, st_toc, st_sn_ac, st_sn_al, st_sn_am, st_sn_ap, st_sn_ba, st_sn_ce, st_sn_df, st_sn_es, st_sn_goi, st_sn_ma, st_sn_mg, st_sn_ms, st_sn_mt, st_sn_pa, st_sn_pb, st_sn_pe, st_sn_pi, st_sn_pr, st_sn_rj, st_sn_rn, st_sn_ro, st_sn_rr, st_sn_rs, st_sn_sc, st_sn_se, st_sn_toc) {
+function inserirNbmi(codigo, ncm, nbm, st_ac, st_al, st_am, st_ap, st_ba, st_ce, st_df, st_es, st_ex, st_goi, st_ma, st_mg, st_ms, st_mt, st_pa, st_pb, st_pe, st_pi, st_pr, st_rj, st_rn, st_ro, st_rr, st_rs, st_sc, st_se, st_sp, st_toc, st_sn_ac, st_sn_al, st_sn_am, st_sn_ap, st_sn_ba, st_sn_ce, st_sn_df, st_sn_es, st_sn_goi, st_sn_ma, st_sn_mg, st_sn_ms, st_sn_mt, st_sn_pa, st_sn_pb, st_sn_pe, st_sn_pi, st_sn_pr, st_sn_rj, st_sn_rn, st_sn_ro, st_sn_rr, st_sn_rs, st_sn_sc, st_sn_se, st_sn_toc, perc_red_st, icms) {
     //console.log(codigo, ncm, nbm);
     db.transaction(function (txn) {
-        txn.executeSql('insert into cad_nbmi (ref_codigo, ncm, nbm, st_ac, st_al, st_am, st_ap, st_ba, st_ce, st_df, st_es, st_ex, st_goi, st_ma, st_mg, st_ms, st_mt, st_pa, st_pb, st_pe, st_pi, st_pr, st_rj, st_rn, st_ro, st_rr, st_rs, st_sc, st_se, st_sp, st_toc, st_sn_ac, st_sn_al, st_sn_am, st_sn_ap, st_sn_ba, st_sn_ce, st_sn_df, st_sn_es, st_sn_goi, st_sn_ma, st_sn_mg, st_sn_ms, st_sn_mt, st_sn_pa, st_sn_pb, st_sn_pe, st_sn_pi, st_sn_pr, st_sn_rj, st_sn_rn, st_sn_ro, st_sn_rr, st_sn_rs, st_sn_sc, st_sn_se, st_sn_toc) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [codigo, ncm, nbm, st_ac, st_al, st_am, st_ap, st_ba, st_ce, st_df, st_es, st_ex, st_goi, st_ma, st_mg, st_ms, st_mt, st_pa, st_pb, st_pe, st_pi, st_pr, st_rj, st_rn, st_ro, st_rr, st_rs, st_sc, st_se, st_sp, st_toc, st_sn_ac, st_sn_al, st_sn_am, st_sn_ap, st_sn_ba, st_sn_ce, st_sn_df, st_sn_es, st_sn_goi, st_sn_ma, st_sn_mg, st_sn_ms, st_sn_mt, st_sn_pa, st_sn_pb, st_sn_pe, st_sn_pi, st_sn_pr, st_sn_rj, st_sn_rn, st_sn_ro, st_sn_rr, st_sn_rs, st_sn_sc, st_sn_se, st_sn_toc],
+        txn.executeSql('insert into cad_nbmi (ref_codigo, ncm, nbm, st_ac, st_al, st_am, st_ap, st_ba, st_ce, st_df, st_es, st_ex, st_goi, st_ma, st_mg, st_ms, st_mt, st_pa, st_pb, st_pe, st_pi, st_pr, st_rj, st_rn, st_ro, st_rr, st_rs, st_sc, st_se, st_sp, st_toc, st_sn_ac, st_sn_al, st_sn_am, st_sn_ap, st_sn_ba, st_sn_ce, st_sn_df, st_sn_es, st_sn_goi, st_sn_ma, st_sn_mg, st_sn_ms, st_sn_mt, st_sn_pa, st_sn_pb, st_sn_pe, st_sn_pi, st_sn_pr, st_sn_rj, st_sn_rn, st_sn_ro, st_sn_rr, st_sn_rs, st_sn_sc, st_sn_se, st_sn_toc, perc_red_st, icms) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        [codigo, ncm, nbm, st_ac, st_al, st_am, st_ap, st_ba, st_ce, st_df, st_es, st_ex, st_goi, st_ma, st_mg, st_ms, st_mt, st_pa, st_pb, st_pe, st_pi, st_pr, st_rj, st_rn, st_ro, st_rr, st_rs, st_sc, st_se, st_sp, st_toc, st_sn_ac, st_sn_al, st_sn_am, st_sn_ap, st_sn_ba, st_sn_ce, st_sn_df, st_sn_es, st_sn_goi, st_sn_ma, st_sn_mg, st_sn_ms, st_sn_mt, st_sn_pa, st_sn_pb, st_sn_pe, st_sn_pi, st_sn_pr, st_sn_rj, st_sn_rn, st_sn_ro, st_sn_rr, st_sn_rs, st_sn_sc, st_sn_se, st_sn_toc, perc_red_st, icms],
         function (tx, res) {
             //console.log(res);
         }, function (tx, error) {
@@ -285,7 +295,7 @@ function sincronizadorProdutos() {
         var r = res.body;
         deletarProdutos();
         for (var x=0; x<r.length; x++) {
-            inserirProdutos(x, r.length, r[x].CODIGO, r[x].DESCRICAO, r[x].ESTOQUEATUAL, r[x].PRECO_VENDA_A, r[x].PRECO_VENDA_A_ORIGINAL, r[x].PERCENTUAL_DESCONTO, r[x].PERCENTUAL_DESCONTO_ORIGINAL, r[x].ALIQUOTA_IPI, r[x].ALIQUOTA_IPI_ORIGINAL, r[x].REF_UNIDADE, r[x].DESCRICAO_UNIDADE, r[x].PROMOCIONAL);
+            inserirProdutos(x, r.length, r[x].CODIGO, r[x].DESCRICAO, r[x].ESTOQUEATUAL, r[x].PRECO_VENDA_A, r[x].PRECO_VENDA_A_ORIGINAL, r[x].PERCENTUAL_DESCONTO, r[x].PERCENTUAL_DESCONTO_ORIGINAL, r[x].ALIQUOTA_IPI, r[x].ALIQUOTA_IPI_ORIGINAL, r[x].REF_UNIDADE, r[x].DESCRICAO_UNIDADE, r[x].PROMOCIONAL, r[x].NBMIPI, r[x].ST, r[x].CUSTO_BRUTO, r[x].GRUPO);
         }
     });
 }
@@ -376,11 +386,11 @@ function deletarClientes() {
     });
 }
 
-function inserirProdutos(inicio, final, ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional) {
+function inserirProdutos(inicio, final, ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional, nbmipi, st, custo_bruto, grupo) {
     //console.log(ref_codigo, descricao, estoqueatual, preco_venda_a);
     db.transaction(function (txn) {
-        txn.executeSql('insert into produtos (ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional) values (?,?,?,?,?,?,?,?,?,?,?,?)',
-        [ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional],
+        txn.executeSql('insert into produtos (ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional, nbmipi, st, custo_bruto, grupo) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        [ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional, nbmipi, st, custo_bruto, grupo],
         function (tx, res) {
             if (inicio === (final -1)) {
                 closeLoading();
@@ -456,6 +466,7 @@ function atualizarData() {
         });
     });
 }
+
 function verificarAtualizador(cod_vendedor_externo) {
     data = obterData();
 

@@ -1,6 +1,6 @@
 var db;
-//document.addEventListener('deviceready', onDeviceready);
-onDeviceready();
+document.addEventListener('deviceready', onDeviceready);
+
 function onDeviceready() {
 
     db = sqlitePlugin.openDatabase({name: 'mydb.db'});
@@ -9,6 +9,9 @@ function onDeviceready() {
         var sql = 'create table if not exists parametros(';
         sql += ' ref_codigo integer primary key,';
         sql += ' online_perm_dig_desconto varchar(1),';
+        sql += ' calc_impostos_nf text,';
+        sql += ' estado varchar(2),';
+        sql += ' casas_decimais_venda varchar(1),';
         sql += ' online_perm_alt_precos varchar(1)';
         sql += ')';
         txn.executeSql(sql);
@@ -17,6 +20,7 @@ function onDeviceready() {
     db.transaction(function (txn) {
         var sql = 'create table if not exists venda(';
         sql += ' cod_venda integer primary key autoincrement,';
+        sql += ' ref_venda integer,';
         sql += ' cod_clie integer,';
         sql += ' cod_pagamento integer,';
         sql += ' tipo_pagamento varchar(10),';
@@ -33,12 +37,17 @@ function onDeviceready() {
         sql += ' cod_produto integer,';
         sql += ' descricao_produto varchar(60),';
         sql += ' valor_unitario text,';
+        sql += ' valor_unitario_original text,';
         sql += ' percentual_desconto text,';
         sql += ' percentual_acrescimo text,';
         sql += ' aliquota_ipi text,';
         sql += ' quantidade integer,';
+        sql += ' cod_grupo integer,';
         sql += ' unidade varchar(2),';
-        sql += ' valor_total text'; 
+        sql += ' valor_total text,';
+        sql += ' custo_bruto text,';
+        sql += ' st_ipi text,';
+        sql += ' valor_unit_liq text';
         sql += ')';
         txn.executeSql(sql);
     });
@@ -48,6 +57,8 @@ function onDeviceready() {
         sql += ' ref_codigo integer primary key,';
         sql += ' nbm varchar(12),';
         sql += ' ncm varchar(12),';
+        sql += ' perc_red_st text,';
+        sql += ' icms text,';
         sql += ' st_ac text,';
         sql += ' st_al text,';
         sql += ' st_am text,';
@@ -154,13 +165,17 @@ function onDeviceready() {
         var sql = 'create table if not exists produtos(';
         sql += ' ref_codigo integer primary key,';
         sql += ' descricao text,';
+        sql += ' grupo integer,';
         sql += ' ref_unidade integer,';
         sql += ' ref_unidade_descricao varchar(2),';
+        sql += ' st varchar(3),';
         sql += ' estoqueatual text,';
         sql += ' preco_venda_a text,';
         sql += ' preco_venda_a_original text,';
+        sql += ' custo_bruto text,';
         sql += ' percentual_desconto text,';
         sql += ' percentual_desconto_original text,';
+        sql += ' nbmipi text,';
         sql += ' aliquota_ipi text,';
         sql += ' aliquota_ipi_original text,';
         sql += ' promocional varchar(2)';
