@@ -69,6 +69,12 @@ function preparaPedido() {
         return false;
     }
 
+    if (tipo === '') {
+        closeLoading();
+        alert('Não é permitido enviar pedido com o tipo de pagamento vazio.');
+        return false;
+    }
+
     dadosVenda = {
         cod_clie: cod_clie,
         condicao: condicao,
@@ -168,7 +174,9 @@ function confirmaVendaExcluida(msg) {
                 {
                 label:'Ok',
                 onclick: function() {
-                    cancelarVenda();
+                    setTimeout(function() {
+                        cancelarVenda();
+                    }, 100);
                 }
             }
         ]

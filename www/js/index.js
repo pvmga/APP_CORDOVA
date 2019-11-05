@@ -34,8 +34,8 @@ setTimeout(function() {
 //    openPage('../pages/clientes_cadastro');
 //    openPage('../pages/clientes');
 //    openPage('../pages/produtos');
-//    openPage('../home');
-}, 500)
+    openPage('../home');
+}, 500);
 
 var BASE_URL = 'http://192.168.1.33/projetos/WS_APP'; // localhost
 //var BASE_URL = 'http://200.150.122.150/WS_APP'; // externo
@@ -44,7 +44,7 @@ var BASE_URL = 'http://192.168.1.33/projetos/WS_APP'; // localhost
 /* LOGIN */
 function sincroniza(cod_vendedor_externo) {
     checkConnection();
-  
+      
     loading('Aguarde, estamos sincronizando os dados...');
     sincronizadorProdutos();
 
@@ -78,16 +78,16 @@ function sincronizadorParametros() {
         //console.log(r['CODIGO']);
         deletarParametros();
         //for (var x=0; x<r.length; x++) {
-            inserirParametros(r.CODIGO, r.ONLINE_PERM_DIG_DESCONTO, r.ONLINE_PERM_ALT_PRECOS, r.CALC_IMPOSTOS_NF, r.ESTADO, r.CASAS_DECIMAIS_VENDA);
+            inserirParametros(r.CODIGO, r.ONLINE_PERM_DIG_DESCONTO, r.ONLINE_PERM_ALT_PRECOS, r.CALC_IMPOSTOS_NF, r.ESTADO, r.CASAS_DECIMAIS_VENDA, r.DESCONTO_MAXIMO, r.ACRESCIMO, r.COD_CONDPGTO_PADRAO);
         //}
     });
 }
 
-function inserirParametros(codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda) {
+function inserirParametros(codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, acrescimo, cod_condpgto_padrao) {
     //console.log('inserirParametros');
     db.transaction(function (txn) {
-        txn.executeSql('insert into parametros (ref_codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda) values (?,?,?,?,?,?)', 
-        [codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda],
+        txn.executeSql('insert into parametros (ref_codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, condpgto_acrescimo, cod_condpgto_padrao) values (?,?,?,?,?,?,?,?,?)', 
+        [codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, acrescimo, cod_condpgto_padrao],
         function (tx, res) {
             //console.log(res);
         }, function (tx, error) {
@@ -394,6 +394,7 @@ function inserirProdutos(inicio, final, ref_codigo, descricao, estoqueatual, pre
         function (tx, res) {
             if (inicio === (final -1)) {
                 closeLoading();
+                atualizarData();
                 openPage('home');
                 console.log('(PRODUTOS) REALIZADO INSERT EM ' + final + ' REGISTROS.');
                 //alerta('Sincronização.', 'Processo de sincronização finalizado.');
@@ -448,7 +449,10 @@ function obterData() {
     // Formata a data e a hora (note o mês + 1)
     // resolvi colocar neste formato para evitar de ficar tratando toda vez que for exibir a data em tela.
     // para transferir a venda basta formatar YYYY/MM/DD.
-    var str_data = dia +''+ (mes+1) +''+ ano4;
+    if (dia < 10) {
+        dia = '0' + dia;
+    }
+    var str_data = dia +'/'+ (mes+1) +'/'+ ano4;
 
     return str_data
 }
@@ -484,7 +488,6 @@ function verificarAtualizador(cod_vendedor_externo) {
                 openPage('home');
                 console.log('Já foi atualizado');
             } else {
-                atualizarData();
                 //document.cookie = "codigo="+dados.rows.item(0).codigo+";usuario="+dados.rows.item(0).usuario+"";
                 sincroniza(cod_vendedor_externo);
                 
@@ -557,8 +560,6 @@ function verificarOnline(usuario, senha) {
             closeLoading('btn-validar');
             alerta('Login', 'Não encontramos o usuário, tente novamente ou entre em contato com o suporte.');
         } else {
-            //deletarAtualizacao();
-            atualizarData();
             // DELETAR OS USUÁRIOS SOMENTE QUANDO FOR UM USUÁRIO NOVO, SENDO ASSIM SEMPRE VOU MANTER UM USUÁRIO NA BASE DE DADOS DO SISTEMA.
             deletarUsuarios(r[0].APELIDO, r[0].SENHA, r[0].CODIGO, r[0].VENDEDOR);
             //console.log(r[0].VENDEDOR);

@@ -2,7 +2,7 @@ function sairApp() {
     navigator.app.exitApp();
 }
 
-document.addEventListener('deviceready', checkConnection);
+//document.addEventListener('deviceready', checkConnection);
 
 function checkConnection() {
     

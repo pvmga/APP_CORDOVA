@@ -94,44 +94,64 @@ function selectCliente(params) {
     }, 500);
 }
 
-function verificarProduto(codigoProduto, descricao) {
+function verificaDesconto(percDescontoDigitado, percDescontoOriginal, valor_unitario_digitado, valor_unitario_backup) {
+
+    var divisao = (100 - ((valor_unitario_digitado / valor_unitario_backup) * 100)).toFixed(2);
+    var total_desconto = (parseFloat(divisao) + parseFloat(percDescontoDigitado)).toFixed(2);
+
+    //console.log(divisao, percDescontoDigitado, percDescontoOriginal, valor_unitario_digitado, valor_unitario_backup);
+
+    if (percDescontoDigitado !== '0.00' || parametros.desconto_maximo !== '0.00') {
+        if (total_desconto > percDescontoOriginal) {
+            if (total_desconto > parametros.desconto_maximo) {
+                return '0';
+            }
+        }
+    }
+}
+
+function verificarProduto(codigoProduto) {
 
     var produtosInseridos = document.querySelectorAll('.ref_codigo_produto_inserido');
     var codigoCliente = document.getElementById('codigoCliente').value;
 
-    // timeout com intuito de melhorar a experiência do usuário.
-    setTimeout(function() {
-        for (var i=0; i<produtosInseridos.length; i++) {
-            if (produtosInseridos[i].innerText === codigoProduto) {
-                //console.log(produtosInseridos[i].innerText === codigoProduto);
-                console.log('Entrou novo e será deletado o antigo');
-                db.transaction(function (txn) {
-                    txn.executeSql("delete from itensven where cod_clie = "+codigoCliente+" and cod_produto = "+codigoProduto, [],
-                    function (tx, res) {
-                        add(codigoProduto, descricao);
-                    }, function (tx, error) {
-                        console.log(error);
-                        return false;
-                    });
+    for (var i=0; i<produtosInseridos.length; i++) {
+        if (produtosInseridos[i].innerText === codigoProduto) {
+            //console.log(produtosInseridos[i].innerText === codigoProduto);
+            //console.log('Entrou novo e será deletado o antigo');
+            db.transaction(function (txn) {
+                txn.executeSql("delete from itensven where cod_clie = "+codigoCliente+" and cod_produto = "+codigoProduto, [],
+                function (tx, res) {
+                    console.log('Produto removido');
+                }, function (tx, error) {
+                    console.log(error);
+                    return false;
                 });
-                return false;
-            } else if (i == (produtosInseridos.length - 1)) {
-                // GARANTIR QUE SÓ IRÁ EXECUTAR AO FINALIZAR TODA VERIFICAÇÃO
-                //add(codigoProduto, descricao);
-            }
+            });
         }
-        add(codigoProduto, descricao);
-    }, 100);
+    }
 }
 
 function add(codigoProduto, descricao) {
-    // LIMPA LISTAGEM PRODUTO
-    selectProdutos = [];
-
     var todosProdutosListado = document.querySelectorAll('.tabela-produtos .item .ref_codigo_produto');
     
     for (var x=0; x<todosProdutosListado.length; x++) {
         if (todosProdutosListado[x].innerText == codigoProduto) {
+            var percentual_desconto = document.querySelectorAll('.tabela-produtos .item div .row .desconto input.percentual_desconto')[x].value;
+            var percentual_desconto_original = document.querySelectorAll('.tabela-produtos .item div .row .desconto input.percentual_desconto_original')[x].value;
+            var valor_unitario_produto = document.querySelectorAll('.tabela-produtos .item div .row .valor input.valor_unitario_produto')[x].value;
+            var valor_unitario_produto_backup = document.querySelectorAll('.tabela-produtos .item div .row .valor input.valor_unitario_produto_backup')[x].value;
+                    
+            if (verificaDesconto(percentual_desconto.replace(',', '.'), percentual_desconto_original.replace(',', '.'), valor_unitario_produto.replace(',', '.'), valor_unitario_produto_backup.replace(',', '.')) === '0') {
+                alert('Desconto ultrapassou o limite permitido');
+                return false;
+            }
+
+            // verifica existência
+            verificarProduto(codigoProduto);
+
+            // LIMPA LISTAGEM PRODUTO
+            selectProdutos = [];
 
             $('#listagem_produtos_adicionado').removeClass('hidden');
 
@@ -140,8 +160,6 @@ function add(codigoProduto, descricao) {
             disabledCondicaoPagamento();
 
             var quantidade_digitada = document.querySelectorAll('.tabela-produtos .item div .row .quantidade input.quantidade_digitada')[x].value;
-            var percentual_desconto = document.querySelectorAll('.tabela-produtos .item div .row .desconto input.percentual_desconto')[x].value;
-            var valor_unitario_produto = document.querySelectorAll('.tabela-produtos .item div .row .valor input.valor_unitario_produto')[x].value;
             var aliquota_ipi_original = document.querySelectorAll('.tabela-produtos .item div .row .valor input.aliquota_ipi_original')[x].value;
             var percentual_acrescimo = document.querySelectorAll('.tabela-produtos .item div .row .valor input.percentual_acrescimo')[x].value;
             var cod_grupo = document.querySelectorAll('.tabela-produtos .item div .row .valor input.cod_grupo')[x].value;
@@ -151,11 +169,11 @@ function add(codigoProduto, descricao) {
                 'codigo_produto': codigoProduto,
                 'descricao': descricao,
                 'quantidade_digitada': parseInt(quantidade_digitada),
-                'percentual_desconto': (percentual_desconto == '') ? '00.00' : parseFloat((percentual_desconto).replace(',', '.')),
+                'percentual_desconto': (percentual_desconto == '') ? 0 : parseFloat((percentual_desconto).replace(',', '.')),
                 'valor_unitario_produto': parseFloat((valor_unitario_produto).replace(',', '.')),
                 'valor_unitario_produto_original': parseFloat((valor_unitario_produto_original).replace(',', '.')),
                 'aliquota_ipi_original': parseFloat(aliquota_ipi_original),
-                'percentual_acrescimo': parseFloat(percentual_acrescimo),
+                'percentual_acrescimo': (percentual_acrescimo === '') ? 0 : parseFloat(percentual_acrescimo),
                 'cod_grupo': cod_grupo,
                 'custo_bruto': parseFloat(custo_bruto)
             }
@@ -509,6 +527,7 @@ function listarProdutos(dados) {
             preco_venda_a_original: (preco_venda_a_original).toString().replace('.', ','),
             preco_venda_a: (preco_venda_a).toString().replace('.', ','), // LISTAGEM
             percentual_desconto: dados[i].percentual_desconto, // LISTAGEM
+            percentual_desconto_original: dados[i].percentual_desconto,
             percentual_acrescimo: percentual_acrescimo, // LISTAGEM
             aliquota_ipi_original: dados[i].aliquota_ipi_original, // LISTAGEM
             cod_grupo: dados[i].grupo, // LISTAGEM
@@ -545,36 +564,33 @@ function existeVenda(codigo) {
     });
 }
 
-function updateVenda() {
-
-    var codigoCliente = $('#codigoCliente').val();
-    var cond_pagamento = $('.select2CondPagamento option:selected').val();
-    var tipo_pagamento = $('.select2TipoPagamento option:selected').val();
-
-    var sql = "update venda set cod_pagamento = ?, tipo_pagamento = ? where cod_clie = "+codigoCliente;
-
-    db.transaction(function (txn) {
-        txn.executeSql(sql, [cond_pagamento, tipo_pagamento],
-        function (tx, res) {
-            console.log('UPDATE VENDA');
-        }, function (tx, error) {
-            console.log(error);
-            return false;
-        });
-    });
-}
-
-function insertVenda() {
+function insertVenda(tp) {
 
     var cod_clie = $('#codigoCliente').val();
     var cond_pagamento = $('.select2CondPagamento option:selected').val();
     var tipo_pagamento = $('.select2TipoPagamento option:selected').val();
+    var informacoes = '';
+    var sql = '';
+    var msg = '';
+
+    if (cond_pagamento === '') {
+        cond_pagamento = parametros.cod_condpgto_padrao;
+    }
+
+    if (tp === 'up') {
+        sql = "update venda set cod_pagamento = ?, tipo_pagamento = ? where cod_clie = "+cod_clie;
+        informacoes = [cond_pagamento, tipo_pagamento];
+        msg = 'UPDATE VENDA';
+    } else {
+        sql = "insert into venda (cod_clie, cod_pagamento, tipo_pagamento, total_venda, sincronizado) values (?,?,?,?,?)";
+        informacoes = [cod_clie, cond_pagamento, tipo_pagamento, 0, 'N'];
+        msg = 'Adicionado venda para este cliente';
+    }
 
     db.transaction(function (txn) {
-        txn.executeSql("insert into venda (cod_clie, cod_pagamento, tipo_pagamento, total_venda, sincronizado) values (?,?,?,?,?)",
-        [cod_clie, cond_pagamento, tipo_pagamento, 0, 'N'],
+        txn.executeSql(sql, informacoes,
         function (tx, res) {
-            console.log('Adicionado venda para este cliente');
+            console.log(msg);
         }, function (tx, error) {
             console.log(error);
             return false;

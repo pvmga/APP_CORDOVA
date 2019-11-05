@@ -1,14 +1,24 @@
 <h2 class="text-strong padding">Orçamentos</h2>
-<div class="list padding grey-100" >
-    <div class="item white mark border-green margin-button shadow" data="todasVendas">
-        <div class="left">
-            <h2><strong>${cod_clie}</strong></h2>
-            <!--<p class="text-grey">${descricao_cond}</p>
-            <p class="text-grey">${descricao_tipo}</p>
-            <p class="text-green">${data_venda}</p>-->
+<div class="timeline grey-100">
+    <div class="row" data="todasVendas">
+        <div class="col-10 align-center marker">
+            <div class="col icon-circle-small text-white blue-800">
+                <i class="icon ion-briefcase"></i>
+            </div>
         </div>
-        <div class="right">
-            <button class="icon ion-arrow-right-a text-blue-600"></button>
+        <div class="col shadow radius margin white" >
+            <div class="left">
+                <div class="margin">
+                    <h2><span class="text-bold">${cod_venda}</span> | ${nome_fantasia}</h2>
+                    <p class="text-grey">${descricao_cond}</p>
+                    <p class="text-grey">${descricao_tipo}</p>
+                </div>
+            </div>
+            <div class="right">
+                <div class="margin">
+                    <button class="icon ion-arrow-right-a text-blue-600" onclick="openPage('pages/processoVendas', { codigo: `${codigo}`, nome_cliente: `${nome_fantasia}`, estado: `${estado}`, optante_simples: `${optante_simples}`, calcula_st: `${calcula_st}`, codigo_vendedor: `${codigo_vendedor}`, ref_codigo: `${ref_codigo}` }, selectCliente);"></button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

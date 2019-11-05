@@ -1,13 +1,48 @@
+<!--<div class="row cyan-300 space-between vertical-align-center" style="height: 100px">
+    <div class="col-10">
+      <button class="icon ion-chevron-left text-white"></button>
+    </div>
+    <div class="col align-center">
+      <span class="text-white text-huge">15</span>
+    </div>
+    <div class="col-10">
+      <button class="icon ion-chevron-right text-white"></button>
+    </div>
+</div>-->
+<div class="row vertical-align-center blue-700 text-white ">
+    <div class="col-20"></div>
+    <div class="col-20 align-center">
+        <input class="text-bold text-white dt_inicial" type="text" value="" id="dt_inicial">
+    </div>
+    <div class="col-10"></div>
+    <div class="col-20 align-center">
+        <input class="text-bold text-white dt_final" type="text" value="" id="dt_final">
+    </div>
+    <div class="col"></div>
+    <div class="col-10">
+      <button class="icon ion-calendar text-white" onclick="buscarVendas('', '');"></button>
+    </div>
+</div>
 <h2 class="text-strong padding">Enviados:</h2>
-<div class="list padding grey-100">
-    <div class="item white mark border-green margin-button shadow" data="todasVendas">
-        <div class="left">
-            <h2><strong>${COD_VENDA}</strong></h2>
-            <p class="text-grey">+44 99878-5798</p>
-            <p class="text-green">21/07/2019.</p>
+<div class="timeline grey-100">
+    <div class="row" data="todasVendas">
+        <div class="col-10 align-center marker">
+            <div class="col icon-circle-small text-white blue-800">
+                <i class="icon ion-briefcase"></i>
+            </div>
         </div>
-        <div class="right">
-            <button class="icon ion-arrow-right-a text-blue-600"></button>
+        <div class="col shadow radius margin white" >
+            <div class="left">
+                <div class="margin">
+                    <h2><span class="text-bold">${COD_VENDA}</span> | ${NOME_FANTASIA} </h2>
+                    <p class="text-grey">${TOTAL_VENDA}</p>
+                </div>
+            </div>
+            <div class="right">
+                <div class="margin">
+                    <button class="icon ion-arrow-right-a text-blue-600" onclick="alert('Acompanhamento...');"></button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

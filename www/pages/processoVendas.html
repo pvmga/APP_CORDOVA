@@ -17,7 +17,7 @@
                 <p class="align-center text-strong" id="nomeCliente"></p>
             </div>
             <div class="item">
-                <select class="select2CondPagamento" name="state" onchange="updateVenda();">
+                <select class="select2CondPagamento" name="state" onchange="insertVenda('up');">
                     <option value="">Condição de Pagamento...</option>
                     <option value="${ref_codigo}" data="condicao">${descricao}</option>
                 </select>
@@ -25,7 +25,7 @@
 
             <div class="item">
                 <input id="percentualAcrescimo" hidden>
-                <select class="select2TipoPagamento" name="state" onchange="updateVenda();">
+                <select class="select2TipoPagamento" name="state" onchange="insertVenda('up');">
                     <option value="">Tipo de Pagamento...</option>
                     <option value="${sigla}" data="tipo">${descricao}</option>
                 </select>
@@ -59,6 +59,10 @@
                                 <label class="text-bold" for="percentual_desconto">(%) Desc.</label>
                                 <input class="small percentual_desconto" type="text" name="percentual_desconto" id="percentual_desconto" placeholder="" value="${percentual_desconto}">
                             </div>
+                            <div class="grey-200 desconto padding col border" hidden>
+                                <label class="text-bold" for="percentual_desconto_original">(%) Desc.</label>
+                                <input class="small percentual_desconto_original" type="text" name="percentual_desconto_original" id="percentual_desconto_original" placeholder="" value="${percentual_desconto_original}">
+                            </div>
                             <div class="grey-200 valor padding col border" hidden>
                                 <label class="text-bold" for="cod_grupo">Cod. Grupo</label>
                                 <input class="small cod_grupo" type="text" name="cod_grupo" id="cod_grupo" value="${cod_grupo}">
@@ -79,13 +83,17 @@
                                 <label class="text-bold" for="valor_unitario_produto_original">Aliq.</label>
                                 <input class="small valor_unitario_produto_original" type="text" name="valor_unitario_produto_original" id="valor_unitario_produto_original" value="${preco_venda_a_original}">
                             </div>
+                            <div class="grey-200 valor padding col border" hidden>
+                                <label class="text-bold" for="valor_unitario_produto_backup">Vlr. Unit.</label>
+                                <input class="small valor_unitario_produto_backup" type="text" name="valor_unitario_produto_backup" id="valor_unitario_produto_backup" value="${preco_venda_a}">
+                            </div>
                             <div class="grey-200 valor padding col border">
                                 <label class="text-bold" for="valor_unitario_produto">Vlr. Unit.</label>
                                 <input class="small valor_unitario_produto" type="text" name="valor_unitario_produto_original" id="valor_unitario_produto_original" value="${preco_venda_a}">
                             </div>
                             <div class="col-10 blue-500 no-border">
                                 <div class="margin-top">
-                                    <button class="icon ion-plus text-white" onclick="verificarProduto(`${ref_codigo}`, `${descricao}`);"></button>
+                                    <button class="icon ion-plus text-white" onclick="add(`${ref_codigo}`, `${descricao}`);"></button>
                                 </div>
                             </div>
                         </div>

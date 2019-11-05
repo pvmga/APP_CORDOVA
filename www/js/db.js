@@ -10,9 +10,12 @@ function onDeviceready() {
         sql += ' ref_codigo integer primary key,';
         sql += ' online_perm_dig_desconto varchar(1),';
         sql += ' calc_impostos_nf text,';
+        sql += ' desconto_maximo text,';
         sql += ' estado varchar(2),';
         sql += ' casas_decimais_venda varchar(1),';
-        sql += ' online_perm_alt_precos varchar(1)';
+        sql += ' online_perm_alt_precos varchar(1),';
+        sql += ' cod_condpgto_padrao integer,';
+        sql += ' condpgto_acrescimo text';
         sql += ')';
         txn.executeSql(sql);
     });
