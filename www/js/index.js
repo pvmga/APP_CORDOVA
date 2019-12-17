@@ -11,12 +11,14 @@ var parametros = [];
 var decimal;
 var dadosUser = [];
 var valor_total_venda = [];
+var dadosVenda = [];
 
 document.addEventListener('backPage', function(){
     produtos = [];
     dadosProduto = [];
     //clientes = [];
     dadosCliente = [];
+    dadosVenda = [];
     todasVendas = [];
     selectProdutos = [];
     condicao = [];
@@ -34,12 +36,14 @@ setTimeout(function() {
 //    openPage('../pages/clientes_cadastro');
 //    openPage('../pages/clientes');
 //    openPage('../pages/produtos');
-    openPage('../home');
+    //openPage('../home');
 }, 500);
 
-var BASE_URL = 'http://192.168.1.33/projetos/WS_APP'; // localhost
-//var BASE_URL = 'http://200.150.122.150/WS_APP'; // externo
-//var BASE_URL = 'http://192.168.1.33:3000'; // localhost
+var BASE_URL = 'http://192.168.1.33/projetos/WS_APP'; // localhost ingasoft
+//var BASE_URL = 'http://200.150.122.150/WS_APP'; // externo eletroluz
+
+//var BASE_URL = 'http://192.168.200.252:8182/WS_APP'; // localhost mix bicicletas
+//var BASE_URL = 'http://mixbicicletas.ddns.net:8182/WS_APP'; // externo mix bicicletas
 
 /* LOGIN */
 function sincroniza(cod_vendedor_externo) {
@@ -75,11 +79,9 @@ function sincronizadorParametros() {
         }
         
         var r = res.body;
-        //console.log(r['CODIGO']);
+        //console.log(res);
         deletarParametros();
-        //for (var x=0; x<r.length; x++) {
-            inserirParametros(r.CODIGO, r.ONLINE_PERM_DIG_DESCONTO, r.ONLINE_PERM_ALT_PRECOS, r.CALC_IMPOSTOS_NF, r.ESTADO, r.CASAS_DECIMAIS_VENDA, r.DESCONTO_MAXIMO, r.ACRESCIMO, r.COD_CONDPGTO_PADRAO);
-        //}
+        inserirParametros(r.CODIGO, r.ONLINE_PERM_DIG_DESCONTO, r.ONLINE_PERM_ALT_PRECOS, r.CALC_IMPOSTOS_NF, r.ESTADO, r.CASAS_DECIMAIS_VENDA, r.DESCONTO_MAXIMO, r.ACRESCIMO, r.COD_CONDPGTO_PADRAO);
     });
 }
 
@@ -342,7 +344,9 @@ function sincronizadorClientes(cod_vendedor_externo) {
                 r[x].CODIGO_VENDEDOR,
                 r[x].VENDEDOR_EXTERNO,
                 r[x].CONTRIBUINTE_ICMS,
-                r[x].OPTANTE_SIMPLES
+                r[x].OPTANTE_SIMPLES,
+                r[x].EMAIL_VENDEDOR,
+                r[x].NOME_VENDEDOR
             );
         }
     });
@@ -421,10 +425,10 @@ function insertUsuarios(usuario, senha, ref_codigo, inicio, final, cod_vendedor_
     });
 }
 
-function insertClientes(inicio, final, ref_codigo, nome_fantasia, razao_social, natureza, cgc, inscricao, cpf, rg, cep, endereco, num_end_principal, comp_endereco, bairro, cidade, estado, telefone, celular, contato, transportadora, email, obs_cadastro, consumidor_final, calcula_st, codigo_vendedor, vendedor_externo, contribuinte_icms, optante_simples) {
+function insertClientes(inicio, final, ref_codigo, nome_fantasia, razao_social, natureza, cgc, inscricao, cpf, rg, cep, endereco, num_end_principal, comp_endereco, bairro, cidade, estado, telefone, celular, contato, transportadora, email, obs_cadastro, consumidor_final, calcula_st, codigo_vendedor, vendedor_externo, contribuinte_icms, optante_simples, email_vendedor, nome_vendedor) {
     db.transaction(function (txn) {
-        txn.executeSql('insert into clientes (ref_codigo, nome_fantasia, razao_social, natureza, cgc, inscricao, cpf, rg, cep, endereco, num_end_principal, comp_endereco, bairro, cidade, estado, telefone, celular, contato, transportadora, email, obs_cadastro, consumidor_final, calcula_st, codigo_vendedor, cod_vendedor_externo, contribuinte_icms, optante_simples) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        [ref_codigo, nome_fantasia, razao_social, natureza, cgc, inscricao, cpf, rg, cep, endereco, num_end_principal, comp_endereco, bairro, cidade, estado, telefone, celular, contato, transportadora, email, obs_cadastro, consumidor_final, calcula_st, codigo_vendedor, vendedor_externo, contribuinte_icms, optante_simples],
+        txn.executeSql('insert into clientes (ref_codigo, nome_fantasia, razao_social, natureza, cgc, inscricao, cpf, rg, cep, endereco, num_end_principal, comp_endereco, bairro, cidade, estado, telefone, celular, contato, transportadora, email, obs_cadastro, consumidor_final, calcula_st, codigo_vendedor, cod_vendedor_externo, contribuinte_icms, optante_simples, email_vendedor, nome_vendedor) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        [ref_codigo, nome_fantasia, razao_social, natureza, cgc, inscricao, cpf, rg, cep, endereco, num_end_principal, comp_endereco, bairro, cidade, estado, telefone, celular, contato, transportadora, email, obs_cadastro, consumidor_final, calcula_st, codigo_vendedor, vendedor_externo, contribuinte_icms, optante_simples, email_vendedor, nome_vendedor],
         function (tx, res) {
             if (inicio === (final -1)) {
                 console.log('(CLIENTES) REALIZADO INSERT EM ' + final + ' REGISTROS.');

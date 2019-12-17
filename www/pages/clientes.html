@@ -24,7 +24,7 @@
                         <p style="font-size: 10px;">${nome_fantasia}</p>
                         <p class="grey-200 padding">
                             <button class="$$validaValor{sincronizado} small" onclick="alerta('Sincronizador', 'Cliente sincronizado com o sistema local...');">Sincronizado</button>
-                            <button class="text-blue small" onclick="openPage('pages/processoVendas', { codigo: `${codigo}`, nome_cliente: `${nome_fantasia}`, estado: `${estado}`, optante_simples: `${optante_simples}`, calcula_st: `${calcula_st}`, codigo_vendedor: `${codigo_vendedor}`, ref_codigo: `${ref_codigo}` }, selectCliente);">Montar Pedido</button>
+                            <button class="text-blue small" onclick="openPage('pages/processoVendas', { codigo: `${codigo}`, nome_cliente: `${nome_fantasia}`, estado: `${estado}`, optante_simples: `${optante_simples}`, calcula_st: `${calcula_st}`, codigo_vendedor: `${codigo_vendedor}`, ref_codigo: `${ref_codigo}`, transportadora: `${transportadora}` }, selectCliente);">Montar Pedido</button>
                         </p>
                     </div>
                 </div>

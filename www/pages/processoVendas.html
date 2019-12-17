@@ -14,21 +14,38 @@
                 <p><input id="optanteSimples" hidden></p>
                 <p><input id="codigoVendedor" hidden></p>
                 <p><input id="calculaSt" hidden></p>
-                <p class="align-center text-strong" id="nomeCliente"></p>
+                <p><input id="transportadora" hidden></p>
+                <label class="text-strong">Cliente:</label>
+                <div class="padding grey-300">
+                    <p id="nomeCliente"></p>
+                </div>
             </div>
             <div class="item">
-                <select class="select2CondPagamento" name="state" onchange="insertVenda('up');">
-                    <option value="">Condição de Pagamento...</option>
-                    <option value="${ref_codigo}" data="condicao">${descricao}</option>
-                </select>
+                <label for="select2CondPagamento" class="text-strong">Condição de Pagamento:</label>
+                <div class="padding grey-300">
+                    <select class="select2CondPagamento" id="select2CondPagamento" name="select2CondPagamento" onchange="insertVenda('up');">
+                        <option value="">Condição de Pagamento...</option>
+                        <option value="${ref_codigo}" data="condicao">${descricao}</option>
+                    </select>
+                </div>
             </div>
 
             <div class="item">
                 <input id="percentualAcrescimo" hidden>
-                <select class="select2TipoPagamento" name="state" onchange="insertVenda('up');">
-                    <option value="">Tipo de Pagamento...</option>
-                    <option value="${sigla}" data="tipo">${descricao}</option>
-                </select>
+                <label for="select2TipoPagamento" class="text-strong">Tipo de Pagamento:</label>
+                <div class="padding grey-300">
+                    <select class="select2TipoPagamento" id="select2TipoPagamento" name="select2TipoPagamento" onchange="insertVenda('up');">
+                        <option value="">Tipo de Pagamento...</option>
+                        <option value="${sigla}" data="tipo">${descricao}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="item">
+                <label for="observacao_pedido" class="text-strong">Obs:</label>
+                <div class="grey-300 padding radius" onchange="insertVenda('up');">
+                    <input type="text" id="observacao_pedido" placeholder="Observação pedido...">
+                </div>
             </div>
 
             <div class="item">
@@ -82,6 +99,10 @@
                             <div class="grey-200 valor padding col border" hidden>
                                 <label class="text-bold" for="valor_unitario_produto_original">Aliq.</label>
                                 <input class="small valor_unitario_produto_original" type="text" name="valor_unitario_produto_original" id="valor_unitario_produto_original" value="${preco_venda_a_original}">
+                            </div>
+                            <div class="grey-200 valor padding col border" hidden>
+                                <label class="text-bold" for="unidade_descricao">Aliq.</label>
+                                <input class="small unidade_descricao" type="text" name="unidade_descricao" id="unidade_descricao" value="${unidade_descricao}">
                             </div>
                             <div class="grey-200 valor padding col border" hidden>
                                 <label class="text-bold" for="valor_unitario_produto_backup">Vlr. Unit.</label>
@@ -154,15 +175,15 @@
                 <div class="row" data="valor_total_venda">
                     <div class="grey-200 valor padding border col">
                         <label class="text-bold" for="">Total Produtos</label>
-                        <input class="small " type="text" name="" id="" value="${valor_produtos}" disabled>
+                        <input class="small " type="text" name="vlr_total_produtos" id="vlr_total_produtos" value="${valor_produtos}" disabled>
                     </div>
                     <div class="grey-200 valor padding border col">
                         <label class="text-bold" for="">Total ST/IPI</label>
-                        <input class="small " type="text" name="" id="" value="${valor_st_ipi}" disabled>
+                        <input class="small " type="text" name="vlr_total_st_ipi" id="vlr_total_st_ipi" value="${valor_st_ipi}" disabled>
                     </div>
                     <div class="grey-200 valor padding border col">
                         <label class="text-bold" for="">Total Venda</label>
-                        <input class="small " type="text" name="" id="" value="${valor_total}" disabled>
+                        <input class="small " type="text" name="vlr_total_venda" id="vlr_total_venda" value="${valor_total}" disabled>
                     </div>
                 </div>
             </div>

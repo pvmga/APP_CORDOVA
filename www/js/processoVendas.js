@@ -66,6 +66,24 @@ function usuarioVenda() {
     });
 }
 
+function clienteVenda(cod_cliente) {
+    var sql = "select * from clientes where codigo = "+cod_cliente;
+
+    db.transaction(function (txn) {
+        txn.executeSql(sql, [],
+        function (tx, res) {
+            if (typeof networkState === 'undefined') {
+                dadosCliente = res.rows[0];
+            } else {
+                dadosCliente = res.rows._array[0];
+            }
+        }, function (tx, error) {
+            console.log(error);
+            return false;
+        });
+    });
+}
+
 function selectCliente(params) {
     
     document.getElementById('codigoCliente').value = params.codigo;
@@ -76,6 +94,7 @@ function selectCliente(params) {
     document.getElementById('optanteSimples').textContent = params.optante_simples;
     document.getElementById('calculaSt').textContent = params.calcula_st;
     document.getElementById('codigoVendedor').textContent = params.codigo_vendedor;
+    document.getElementById('transportadora').textContent = params.transportadora;
 
     // guardar dados para utilizar na inserção de produtos;
     aliquotaEstado(params.estado);
@@ -83,6 +102,8 @@ function selectCliente(params) {
     parametroSoftware();
     // dados user
     usuarioVenda();
+    // dados Cliente
+    clienteVenda(params.codigo);
 
     // VERIFICAR EXISTÊNCIA DE VENDA
     existeVenda(params.codigo);
@@ -165,6 +186,7 @@ function add(codigoProduto, descricao) {
             var cod_grupo = document.querySelectorAll('.tabela-produtos .item div .row .valor input.cod_grupo')[x].value;
             var custo_bruto = document.querySelectorAll('.tabela-produtos .item div .row .valor input.custo_bruto')[x].value;
             var valor_unitario_produto_original = document.querySelectorAll('.tabela-produtos .item div .row .valor input.valor_unitario_produto_original')[x].value;
+            var unidade_descricao = document.querySelectorAll('.tabela-produtos .item div .row .valor input.unidade_descricao')[x].value;
             var itens = {
                 'codigo_produto': codigoProduto,
                 'descricao': descricao,
@@ -175,7 +197,8 @@ function add(codigoProduto, descricao) {
                 'aliquota_ipi_original': parseFloat(aliquota_ipi_original),
                 'percentual_acrescimo': (percentual_acrescimo === '') ? 0 : parseFloat(percentual_acrescimo),
                 'cod_grupo': cod_grupo,
-                'custo_bruto': parseFloat(custo_bruto)
+                'custo_bruto': parseFloat(custo_bruto),
+                'unidade_descricao': unidade_descricao
             }
             //console.log(itens);
             percentualNbmi(itens);
@@ -292,6 +315,7 @@ function listaProdutosVenda(dados) {
     $('.select2CondPagamento option:selected').text(dados[0].descricao_cond);
     $('.select2TipoPagamento option:selected').val(dados[0].tipo_pagamento);
     $('.select2TipoPagamento option:selected').text(dados[0].descricao_tipo);
+    $('#observacao_pedido').val(dados[0].observacao);
 
     var sql = "select * from itensven where cod_clie = "+dados[0].cod_clie;
 
@@ -343,7 +367,7 @@ function insertItens(dados, nbmi) {
 
     var cod_produto = dados.codigo_produto;
     var descricao_produto = dados.descricao;
-    var unidade = 'UN';
+    var unidade = dados.unidade_descricao;
     var valor_unitario =  dados.valor_unitario_produto;
     var percentual_desconto = dados.percentual_desconto;
     var percentual_acrescimo = dados.percentual_acrescimo; // a verificar
@@ -532,6 +556,7 @@ function listarProdutos(dados) {
             aliquota_ipi_original: dados[i].aliquota_ipi_original, // LISTAGEM
             cod_grupo: dados[i].grupo, // LISTAGEM
             custo_bruto: dados[i].custo_bruto, // LISTAGEM
+            unidade_descricao: dados[i].ref_unidade_descricao, // LISTAGEM
         };
         //console.log(itens);
         selectProdutos.push(itens);
@@ -569,6 +594,7 @@ function insertVenda(tp) {
     var cod_clie = $('#codigoCliente').val();
     var cond_pagamento = $('.select2CondPagamento option:selected').val();
     var tipo_pagamento = $('.select2TipoPagamento option:selected').val();
+    var observacao = $('#observacao_pedido').val();
     var informacoes = '';
     var sql = '';
     var msg = '';
@@ -578,12 +604,12 @@ function insertVenda(tp) {
     }
 
     if (tp === 'up') {
-        sql = "update venda set cod_pagamento = ?, tipo_pagamento = ? where cod_clie = "+cod_clie;
-        informacoes = [cond_pagamento, tipo_pagamento];
+        sql = "update venda set cod_pagamento = ?, tipo_pagamento = ?, observacao = ? where cod_clie = "+cod_clie;
+        informacoes = [cond_pagamento, tipo_pagamento, observacao];
         msg = 'UPDATE VENDA';
     } else {
-        sql = "insert into venda (cod_clie, cod_pagamento, tipo_pagamento, total_venda, sincronizado) values (?,?,?,?,?)";
-        informacoes = [cod_clie, cond_pagamento, tipo_pagamento, 0, 'N'];
+        sql = "insert into venda (cod_clie, cod_pagamento, tipo_pagamento, total_venda, sincronizado, observacao) values (?,?,?,?,?,?)";
+        informacoes = [cod_clie, cond_pagamento, tipo_pagamento, 0, 'N', ''];
         msg = 'Adicionado venda para este cliente';
     }
 

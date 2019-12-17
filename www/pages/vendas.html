@@ -8,9 +8,27 @@
     <div class="header blue-800 sub shadow tab">
         <button class="icon ion-android-person" onclick="openTabs('orcamentos', '', preecherMaskFiltroVenda())">Orçamentos</button>
         <button class="icon ion-android-list" onclick="openTabs('enviados', '', preecherMaskFiltroVenda())">Enviados</button>
-        <button class="icon ion-android-chat" onclick="openTabs('faturados', '', preecherMaskFiltroVenda())">Faturados</button>
+        <!--<button class="icon ion-android-chat" onclick="openTabs('faturados', '', preecherMaskFiltroVenda())">Faturados</button>-->
     </div>
     <div class="tab-content" id="orcamentos"></div>
     <div class="tab-content" id="enviados"></div>
     <div class="tab-content" id="faturados"></div>
+
+    <div class="hidden" id="template-alert-venda">
+        <div class="list" data="dadosVenda">
+            <div class="row item">
+                <div class="col">
+                    <h2><b>Nome Fantasia: </b></h2><span class="text-small">${NOME_FANTASIA}</span>
+                </div>
+            </div>
+            <label class="item">
+                <h2><b>Total Venda: </b>R$ <span>${TOTAL_VENDA}</span></h2>
+                <h2><b>Tipo Pgto.: </b><span>${DESCRICAO_TIPO}</span></h2>
+                <h2><b>Cond Pgto.: </b><span>${DESCRICAO_PAG}</span></h2>
+                <h2><b>Imprimiu: </b><span>${IMPRIMIU}</span></h2>
+                <h2><b>Enviado Caixa: </b><span>${ENVIADO_CAIXA}</span></h2>
+                <h2><b>Nota Fiscal: </b><span>${NOTAFISCAL}</span></h2>
+            </label>
+        </div>
+    </div>
 </div>

@@ -48,14 +48,14 @@ function buscaCep() {
             closeLoading();
             return console.log(error);
         }
+        var r = res.body;
+        document.getElementById('endereco').value = r.logradouro;
+        document.getElementById('bairro').value = r.bairro;
+        document.getElementById('cidade').value = r.localidade;
+        document.getElementById('estado').value = r.uf;
         setTimeout(function() {
-            var r = res.body;
-            document.getElementById('endereco').value = r.logradouro;
-            document.getElementById('bairro').value = r.bairro;
-            document.getElementById('cidade').value = r.localidade;
-            document.getElementById('estado').value = r.uf;
             closeLoading();
-        }, 1000);
+        }, 300);
 
     });
 
@@ -113,7 +113,7 @@ function mask() {
     //$('#natureza').attr('disabled', true);
     $('#cep').mask('99999-570');
     $('#telefone').mask('(99) 9999-9999');
-    $('#celular').mask('(99) 9 9999-9999');
+    $('#celular').mask('(99) 99999-9999');
     verificarTipo();
 }
 

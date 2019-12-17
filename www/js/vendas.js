@@ -6,6 +6,7 @@ function openTabs(tab){
         case 'enviados':
             include('enviados', './pages/includes/enviados', function() {
                 buscarVendas(obterData(), obterData());
+                console.log(dadosUser);
                 
             });
         break;
@@ -71,7 +72,6 @@ function buscarVendas(data_inicial, data_final) {
     });
     
     request.done(function( res ) {
-        //console.log(res);
         for(var i=0; i<res.length; i++) {
             todasVendas.push(res[i]);
         }
@@ -85,6 +85,43 @@ function buscarVendas(data_inicial, data_final) {
         closeLoading();
         console.log(textStatus, jqXHR);
     });
+}
+
+function alertVenda(numero_venda) {
+    dadosVenda = [];
+
+    var request = $.ajax({
+        url: BASE_URL+"/getDadosVendas/?num_venda="+numero_venda,
+        method: "GET",
+        dataType: "json"
+    });
+    
+    request.done(function( res ) {
+        //console.log(res);
+        dadosVenda.push(res[0]);
+
+        alert({
+            title:'Visualização do pedido',
+            message:'Venda: ' + numero_venda,
+            template: 'template-alert-venda',
+            width:'90%',
+            buttons:[
+            {
+                label: 'Fechar',
+                onclick: function(){
+                    closeAlert();
+                }
+            }
+          ]
+        });
+    });
+    
+    request.fail(function( jqXHR, textStatus ) {
+        alert( "Request failed: " + textStatus );
+        closeLoading();
+        console.log(textStatus, jqXHR);
+    });
+
 }
 
 function preecherMaskFiltroVenda() {

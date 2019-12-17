@@ -3,7 +3,7 @@ document.addEventListener('deviceready', onDeviceready);
 
 function onDeviceready() {
 
-    db = sqlitePlugin.openDatabase({name: 'mydb.db'});
+    db = sqlitePlugin.openDatabase({name: 'mydb.db'});  
 
     db.transaction(function (txn) {
         var sql = 'create table if not exists parametros(';
@@ -27,6 +27,7 @@ function onDeviceready() {
         sql += ' cod_clie integer,';
         sql += ' cod_pagamento integer,';
         sql += ' tipo_pagamento varchar(10),';
+        sql += ' observacao text,';
         sql += ' total_venda text,';
         sql += ' sincronizado varchar(1)';
         sql += ')';
@@ -210,13 +211,15 @@ function onDeviceready() {
         sql += ' transportadora integer,';
         sql += ' email varchar(500),';
         sql += ' obs_cadastro text,';
-        sql += ' consumidor_final varchar(1),';
-        sql += ' calcula_st varchar(1),';
+        sql += ' consumidor_final varchar(1),'; // para salvar o cadastro deverá verificar dados e salvar default
+        sql += ' calcula_st varchar(1),'; // para salvar o cadastro deverá verificar dados e salvar default
         sql += ' codigo_vendedor integer,';
         sql += ' cod_vendedor_externo integer,';
-        sql += ' contribuinte_icms varchar(1),';
+        sql += ' contribuinte_icms varchar(1) default "N",'; // para salvar o cadastro deverá verificar dados e salvar default
         sql += ' sincronizado varchar(1) default "S",';
-        sql += ' optante_simples varchar(1)';
+        sql += ' optante_simples varchar(1) default "N",'; // para salvar o cadastro deverá verificar dados e salvar default
+        sql += ' email_vendedor varchar(500),';
+        sql += ' nome_vendedor varchar(50)';
         sql += ')';
         txn.executeSql(sql);
     });
@@ -227,4 +230,64 @@ function onDeviceready() {
         sql += ')';
         txn.executeSql(sql);
     });
+}
+
+function dropTable() {
+    // DROP TABLE
+    db.transaction(function (txn) {
+        var sql = 'drop table parametros';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table venda';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table itensven';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table cad_nbmi';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table estados';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table tipo';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table condicao';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table usuarios';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table produtos';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table clientes';
+        txn.executeSql(sql);
+    });
+
+    db.transaction(function (txn) {
+        var sql = 'drop table atualizacao';
+        txn.executeSql(sql);
+    });
+
+    // /DROP TABLE 
 }
