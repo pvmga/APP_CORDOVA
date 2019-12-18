@@ -1,3 +1,42 @@
+// VERSÃO APP
+var VERSAO = '1.0.0';
+
+setTimeout(function() {
+    checarVersao();
+}, 500);
+
+function checarVersao() {
+    db.transaction(function (txn) {
+        txn.executeSql("select versao_app from parametros", [],
+        function (tx, res) {
+
+            if (typeof networkState === 'undefined') {
+                checaInfo(res.rows[0]);
+            } else {
+                checaInfo(res.rows._array[0]);
+            }
+
+        }, function (tx, error) {
+            console.log(error);
+            return false;
+        });
+    });
+}
+
+function checaInfo(dados) {
+    if (typeof dados !== 'undefined') {
+        if (VERSAO === dados.versao_app) {
+            console.log('Versão igual');
+        } else {
+            console.log('Nova versão. DropTable e Cria novamente');
+            dropTable();
+        }
+    } else {
+        console.log('Undefined');
+    }
+}
+
+// VARIAVEIS UTILIZADAS DENTRO DO SOFTWARE
 var produtos = [];
 var dadosProduto = [];
 var clientes = [];
@@ -88,8 +127,8 @@ function sincronizadorParametros() {
 function inserirParametros(codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, acrescimo, cod_condpgto_padrao) {
     //console.log('inserirParametros');
     db.transaction(function (txn) {
-        txn.executeSql('insert into parametros (ref_codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, condpgto_acrescimo, cod_condpgto_padrao) values (?,?,?,?,?,?,?,?,?)', 
-        [codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, acrescimo, cod_condpgto_padrao],
+        txn.executeSql('insert into parametros (ref_codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, condpgto_acrescimo, cod_condpgto_padrao, versao_app) values (?,?,?,?,?,?,?,?,?,?)', 
+        [codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, acrescimo, cod_condpgto_padrao, VERSAO],
         function (tx, res) {
             //console.log(res);
         }, function (tx, error) {

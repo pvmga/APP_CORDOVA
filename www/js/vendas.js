@@ -5,9 +5,7 @@ function openTabs(tab){
         break;
         case 'enviados':
             include('enviados', './pages/includes/enviados', function() {
-                buscarVendas(obterData(), obterData());
-                console.log(dadosUser);
-                
+                buscarVendas(obterData(), obterData());                
             });
         break;
         case 'faturados':
@@ -51,6 +49,7 @@ function orcamentos() {
 }
 
 function buscarVendas(data_inicial, data_final) {
+    var cod_vend_externo = 0;
     if (data_inicial !== '') {
         $('#dt_inicial').val(data_inicial);
         $('#dt_final').val(data_final);
@@ -59,31 +58,47 @@ function buscarVendas(data_inicial, data_final) {
     todasVendas = [];
     loading('Buscando dados...');
 
-    var datas = {
-        dt_inicial: $('#dt_inicial').val(),
-        dt_final: $('#dt_final').val()
-    }
+    db.transaction(function (txn) {
+        txn.executeSql('select * from usuarios limit 1', [],
+        function (tx, res) {
+            //console.log(res);
+            if (typeof networkState === 'undefined') {
+                cod_vend_externo = res.rows[0].cod_vendedor_externo;
+            } else {
+                cod_vend_externo = res.rows._array[0].cod_vendedor_externo;
+            }
 
-    var request = $.ajax({
-        url: BASE_URL+"/getVendas/?vendedor="+47,
-        method: "POST",
-        data: { datas: datas },
-        dataType: "json"
-    });
-    
-    request.done(function( res ) {
-        for(var i=0; i<res.length; i++) {
-            todasVendas.push(res[i]);
-        }
-        setTimeout(function() {
-            closeLoading();
-        }, 500);
-    });
-    
-    request.fail(function( jqXHR, textStatus ) {
-        alert( "Request failed: " + textStatus );
-        closeLoading();
-        console.log(textStatus, jqXHR);
+            var datas = {
+                dt_inicial: $('#dt_inicial').val(),
+                dt_final: $('#dt_final').val()
+            }
+        
+            var request = $.ajax({
+                url: BASE_URL+"/getVendas/?vendedor="+cod_vend_externo,
+                method: "POST",
+                data: { datas: datas },
+                dataType: "json"
+            });
+            
+            request.done(function( res ) {
+                for(var i=0; i<res.length; i++) {
+                    todasVendas.push(res[i]);
+                }
+                setTimeout(function() {
+                    closeLoading();
+                }, 500);
+            });
+            
+            request.fail(function( jqXHR, textStatus ) {
+                alert( "Request failed: " + textStatus );
+                closeLoading();
+                console.log(textStatus, jqXHR);
+            });
+
+        }, function (tx, error) {
+            console.log(error);
+            return false;
+        });
     });
 }
 

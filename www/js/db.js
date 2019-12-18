@@ -15,7 +15,8 @@ function onDeviceready() {
         sql += ' casas_decimais_venda varchar(1),';
         sql += ' online_perm_alt_precos varchar(1),';
         sql += ' cod_condpgto_padrao integer,';
-        sql += ' condpgto_acrescimo text';
+        sql += ' condpgto_acrescimo text,';
+        sql += ' versao_app text default "1.0.0"';
         sql += ')';
         txn.executeSql(sql);
     });
@@ -288,6 +289,10 @@ function dropTable() {
         var sql = 'drop table atualizacao';
         txn.executeSql(sql);
     });
-
     // /DROP TABLE 
+
+    // CRIA TABELAS.
+    setTimeout(function() {
+        onDeviceready();
+    }, 1000);
 }
