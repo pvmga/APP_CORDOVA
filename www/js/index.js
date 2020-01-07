@@ -73,9 +73,9 @@ setTimeout(function() {
 //    openPage('../pages/vendas');
 //    openPage('../pages/processoVendas');
 //    openPage('../pages/clientes_cadastro');
-    openPage('../pages/clientes');
+//    openPage('../pages/clientes');
 //    openPage('../pages/produtos');
-    //openPage('../home');
+    openPage('../home');
 }, 500);
 
 var BASE_URL = 'http://192.168.1.33/projetos/WS_APP'; // localhost ingasoft

@@ -7,7 +7,7 @@
     </div>
     <div class="content has-header">
         <div class="list">
-            <div class="item">
+            <div class="item" style="margin-top: -10px;">
                 <p><input id="codigoCliente" hidden></p>
                 <p><input id="refCodigoCliente" hidden></p>
                 <p><input id="estadoCliente" hidden></p>
@@ -20,7 +20,7 @@
                     <p id="nomeCliente"></p>
                 </div>
             </div>
-            <div class="item">
+            <div class="item" style="margin-top: -10px;">
                 <label for="select2CondPagamento" class="text-strong">Condição de Pagamento:</label>
                 <div class="padding grey-300">
                     <select class="select2CondPagamento" id="select2CondPagamento" name="select2CondPagamento" onchange="insertVenda('up');">
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="item">
+            <div class="item" style="margin-top: -10px;">
                 <input id="percentualAcrescimo" hidden>
                 <label for="select2TipoPagamento" class="text-strong">Tipo de Pagamento:</label>
                 <div class="padding grey-300">
@@ -41,14 +41,14 @@
                 </div>
             </div>
 
-            <div class="item">
+            <div class="item" style="margin-top: -10px;">
                 <label for="observacao_pedido" class="text-strong">Obs:</label>
                 <div class="grey-300 padding radius" onchange="insertVenda('up');">
                     <input type="text" id="observacao_pedido" placeholder="Observação pedido...">
                 </div>
             </div>
 
-            <div class="item">
+            <div class="item" style="margin-top: -10px">
                 <div class="right">
                     <button class="icon ion-search" onclick="busca();"></button>
                 </div>
@@ -59,8 +59,8 @@
             </div>
 
             <div class="tabela-produtos">
-                <div class="item $$preencherMask{v}" data="selectProdutos">
-                    <div class="grey-800 padding">
+                <div class="grey-800 padding item $$preencherMask{v}" data="selectProdutos">
+                    <div class="">
                         <span class="hidden ref_codigo_produto" id="">${ref_codigo}</span>
                         <div class="row">
                             
