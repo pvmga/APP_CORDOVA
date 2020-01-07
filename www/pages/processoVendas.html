@@ -63,10 +63,22 @@
                     <div class="grey-800 padding">
                         <span class="hidden ref_codigo_produto" id="">${ref_codigo}</span>
                         <div class="row">
-                            <div class="col">
-                                <h2 class="text-white" style="font-size: 13px;">${ref_codigo}-${descricao}</h2>
+                            
+                            <div class="col-90">
+                                <div class="grey-200 quantidade padding col border">                            
+                                    <label class="text-bold" for="estoque_atual">Descrição</label>
+                                    <input style="font-size: 12px;" class="small" type="text" value="${ref_codigo}-${descricao}" disabled>
+                                </div>
+                            </div>
+
+                            <div class="col-10">
+                                <div class="grey-200 quantidade padding col border">                            
+                                    <label class="text-bold" for="estoque_atual">Est.</label>
+                                    <input style="font-size: 12px;" class="small estoque_atual" type="text" name="estoque_atual" id="estoque_atual" value="${estoqueatual}" disabled>
+                                </div>
                             </div>
                         </div>
+
                         <div class="row margin-top">
                             <div class="grey-200 quantidade padding col border">                            
                                 <label class="text-bold" for="quantidade_digitada">Qtde.</label>
@@ -134,7 +146,10 @@
                 <div class="item" data="dadosProduto" style="font-size: 13px;">
                     <div class="row margin-top">
                         <span class="hidden ref_codigo_produto_inserido" >${cod_produto}</span>
-                        <p style="font-size: 14px;">${cod_produto}-${descricao_produto}</p>
+                        <div class="grey-200 padding col border">
+                            <label class="text-bold" for="">Descrição</label>
+                            <p><span class="text-grey-700" style="font-size: 14px;" >${cod_produto}-${descricao_produto}</span></p>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="grey-200 padding col border">

@@ -73,7 +73,7 @@ setTimeout(function() {
 //    openPage('../pages/vendas');
 //    openPage('../pages/processoVendas');
 //    openPage('../pages/clientes_cadastro');
-//    openPage('../pages/clientes');
+    openPage('../pages/clientes');
 //    openPage('../pages/produtos');
     //openPage('../home');
 }, 500);
@@ -495,6 +495,7 @@ function obterData() {
     if (dia < 10) {
         dia = '0' + dia;
     }
+
     var str_data = dia +'/'+ (mes+1) +'/'+ ano4;
 
     return str_data

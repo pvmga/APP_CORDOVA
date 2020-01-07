@@ -512,7 +512,7 @@ function busca() {
     });
 
     db.transaction(function (txn) {
-        txn.executeSql("select * from produtos where descricao like '%"+pesquisa+"%' or ref_codigo like '"+pesquisa+"%' limit 29", [],
+        txn.executeSql("select * from produtos where descricao like '%"+pesquisa+"%' or ref_codigo like '"+pesquisa+"%' limit 50", [],
         function (tx, res) {
             if (typeof networkState === 'undefined') {
                 listarProdutos(res.rows);
@@ -557,6 +557,7 @@ function listarProdutos(dados) {
             cod_grupo: dados[i].grupo, // LISTAGEM
             custo_bruto: dados[i].custo_bruto, // LISTAGEM
             unidade_descricao: dados[i].ref_unidade_descricao, // LISTAGEM
+            estoqueatual: dados[i].estoqueatual, // LISTAGEM
         };
         //console.log(itens);
         selectProdutos.push(itens);
