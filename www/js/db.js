@@ -14,6 +14,7 @@ function onDeviceready() {
         sql += ' estado varchar(2),';
         sql += ' casas_decimais_venda varchar(1),';
         sql += ' online_perm_alt_precos varchar(1),';
+        sql += ' online_cad_clientes varchar(1),';
         sql += ' cod_condpgto_padrao integer,';
         sql += ' condpgto_acrescimo text,';
         sql += ' versao_app text default "1.0.0"';
@@ -175,6 +176,7 @@ function onDeviceready() {
         sql += ' ref_unidade_descricao varchar(2),';
         sql += ' st varchar(3),';
         sql += ' estoqueatual text,';
+        sql += ' embalagem_venda text,';
         sql += ' preco_venda_a text,';
         sql += ' preco_venda_a_original text,';
         sql += ' custo_bruto text,';

@@ -512,7 +512,7 @@ function busca() {
     });
 
     db.transaction(function (txn) {
-        txn.executeSql("select * from produtos where descricao like '%"+pesquisa+"%' or ref_codigo like '"+pesquisa+"%' limit 50", [],
+        txn.executeSql("select * from produtos where descricao like '%"+pesquisa+"%' or ref_codigo like '"+pesquisa+"%' limit 40", [],
         function (tx, res) {
             if (typeof networkState === 'undefined') {
                 listarProdutos(res.rows);

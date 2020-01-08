@@ -1,3 +1,5 @@
+var networkState = navigator.connection.type;
+
 // VERSÃO APP
 var VERSAO = '1.0.0';
 
@@ -68,14 +70,13 @@ document.addEventListener('backPage', function(){
     valor_total_venda = [];
 });
 
-var networkState = navigator.connection.type;
 setTimeout(function() {
 //    openPage('../pages/vendas');
 //    openPage('../pages/processoVendas');
 //    openPage('../pages/clientes_cadastro');
 //    openPage('../pages/clientes');
 //    openPage('../pages/produtos');
-    openPage('../home');
+    //openPage('../home');
 }, 500);
 
 var BASE_URL = 'http://192.168.1.33/projetos/WS_APP'; // localhost ingasoft
@@ -120,15 +121,14 @@ function sincronizadorParametros() {
         var r = res.body;
         //console.log(res);
         deletarParametros();
-        inserirParametros(r.CODIGO, r.ONLINE_PERM_DIG_DESCONTO, r.ONLINE_PERM_ALT_PRECOS, r.CALC_IMPOSTOS_NF, r.ESTADO, r.CASAS_DECIMAIS_VENDA, r.DESCONTO_MAXIMO, r.ACRESCIMO, r.COD_CONDPGTO_PADRAO);
+        inserirParametros(r.CODIGO, r.ONLINE_PERM_DIG_DESCONTO, r.ONLINE_PERM_ALT_PRECOS, r.CALC_IMPOSTOS_NF, r.ESTADO, r.CASAS_DECIMAIS_VENDA, r.DESCONTO_MAXIMO, r.ACRESCIMO, r.COD_CONDPGTO_PADRAO, r.ONLINE_CAD_CLIENTES);
     });
 }
 
-function inserirParametros(codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, acrescimo, cod_condpgto_padrao) {
-    //console.log('inserirParametros');
+function inserirParametros(codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, acrescimo, cod_condpgto_padrao, online_cad_clientes) {
     db.transaction(function (txn) {
-        txn.executeSql('insert into parametros (ref_codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, condpgto_acrescimo, cod_condpgto_padrao, versao_app) values (?,?,?,?,?,?,?,?,?,?)', 
-        [codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, acrescimo, cod_condpgto_padrao, VERSAO],
+        txn.executeSql('insert into parametros (ref_codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, condpgto_acrescimo, cod_condpgto_padrao, online_cad_clientes, versao_app) values (?,?,?,?,?,?,?,?,?,?,?)', 
+        [codigo, online_perm_dig_desconto, online_perm_alt_precos, calc_impostos_nf, estado, casas_decimais_venda, desconto_maximo, acrescimo, cod_condpgto_padrao, online_cad_clientes, VERSAO],
         function (tx, res) {
             //console.log(res);
         }, function (tx, error) {
@@ -336,7 +336,7 @@ function sincronizadorProdutos() {
         var r = res.body;
         deletarProdutos();
         for (var x=0; x<r.length; x++) {
-            inserirProdutos(x, r.length, r[x].CODIGO, r[x].DESCRICAO, r[x].ESTOQUEATUAL, r[x].PRECO_VENDA_A, r[x].PRECO_VENDA_A_ORIGINAL, r[x].PERCENTUAL_DESCONTO, r[x].PERCENTUAL_DESCONTO_ORIGINAL, r[x].ALIQUOTA_IPI, r[x].ALIQUOTA_IPI_ORIGINAL, r[x].REF_UNIDADE, r[x].DESCRICAO_UNIDADE, r[x].PROMOCIONAL, r[x].NBMIPI, r[x].ST, r[x].CUSTO_BRUTO, r[x].GRUPO);
+            inserirProdutos(x, r.length, r[x].CODIGO, r[x].DESCRICAO, r[x].ESTOQUEATUAL, r[x].PRECO_VENDA_A, r[x].PRECO_VENDA_A_ORIGINAL, r[x].PERCENTUAL_DESCONTO, r[x].PERCENTUAL_DESCONTO_ORIGINAL, r[x].ALIQUOTA_IPI, r[x].ALIQUOTA_IPI_ORIGINAL, r[x].REF_UNIDADE, r[x].DESCRICAO_UNIDADE, r[x].PROMOCIONAL, r[x].NBMIPI, r[x].ST, r[x].CUSTO_BRUTO, r[x].GRUPO, r[x].EMBALAGEM_VENDA);
         }
     });
 }
@@ -429,11 +429,11 @@ function deletarClientes() {
     });
 }
 
-function inserirProdutos(inicio, final, ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional, nbmipi, st, custo_bruto, grupo) {
+function inserirProdutos(inicio, final, ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional, nbmipi, st, custo_bruto, grupo, embalagem_venda) {
     //console.log(ref_codigo, descricao, estoqueatual, preco_venda_a);
     db.transaction(function (txn) {
-        txn.executeSql('insert into produtos (ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional, nbmipi, st, custo_bruto, grupo) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        [ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional, nbmipi, st, custo_bruto, grupo],
+        txn.executeSql('insert into produtos (ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional, nbmipi, st, custo_bruto, grupo, embalagem_venda) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        [ref_codigo, descricao, estoqueatual, preco_venda_a, preco_venda_a_original, percentual_desconto, percentual_desconto_original, aliquota_ipi, aliquota_ipi_original, ref_unidade, ref_unidade_descricao, promocional, nbmipi, st, custo_bruto, grupo, embalagem_venda],
         function (tx, res) {
             if (inicio === (final -1)) {
                 closeLoading();
@@ -496,7 +496,11 @@ function obterData() {
         dia = '0' + dia;
     }
 
-    var str_data = dia +'/'+ (mes+1) +'/'+ ano4;
+    if (mes < 10) {
+        mes = '0'+(mes+1);
+    }
+
+    var str_data = dia +'/'+ mes +'/'+ ano4;
 
     return str_data
 }
@@ -613,6 +617,9 @@ function verificarOnline(usuario, senha) {
 }
 
 function alerta(title, msg) {
+    if (title === 'Suporte.') {
+        msg = msg +'<br /><br /> Versão: '+VERSAO;
+    }
     alert({
         title: title,
         message: msg,

@@ -110,11 +110,48 @@ function verificarTipo() {
 }
 
 function mask() {
+    consultaPermissao();
+
     //$('#natureza').attr('disabled', true);
     $('#cep').mask('99999-570');
     $('#telefone').mask('(99) 9999-9999');
     $('#celular').mask('(99) 99999-9999');
     verificarTipo();
+}
+
+function consultaPermissao() {
+    db.transaction(function (txn) {
+        txn.executeSql("select online_cad_clientes from parametros", [],
+        function (tx, res) {
+            if (typeof networkState === 'undefined') {
+                verificaPermissao(res.rows[0].online_cad_clientes);
+            } else {
+                verificaPermissao(res.rows._array[0].online_cad_clientes);
+            }
+            
+        }, function (tx, error) {
+            console.log(error);
+            return false;
+        });
+    });
+}
+
+function verificaPermissao(online_cad_clientes) {
+    if (online_cad_clientes === 'N') {
+        openPage('./home');
+        alert({
+            title: "Bloqueado",
+            message: "Você não tem permissão para acessar <b>'Cadastro de cliente'</b>.",
+            buttons:[
+                {
+                    label: 'OK',
+                    onclick: function(){
+                        closeAlert();
+                    }
+                }
+            ]
+        });
+    };
 }
 
 function confirmacao() {

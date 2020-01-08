@@ -14,8 +14,9 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "angular": "^1.7.8",
-    "cordova-android": "^8.0.0",
+    "angular": "^1.7.9",
+    "cordova-android": "^8.1.0",
+    "cordova-plugin-cleartext": "^1.0.0",
     "cordova-plugin-network-information": "^2.0.1",
     "cordova-plugin-sqlite-2": "^1.0.6",
     "jquery": "^3.4.1",
@@ -28,7 +29,8 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-sqlite-2": {},
-      "cordova-plugin-network-information": {}
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-cleartext": {}
     },
     "platforms": [
       "android"
